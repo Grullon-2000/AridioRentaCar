@@ -1,0 +1,169 @@
+@page "/clientes"
+@inject IClienteManager ClienteManager
+@inject NavigationManager urlHelper
+@inject IJSRuntime JSRuntime
+
+<h1 class="btn-registro" style="color: darkblue;">Registro de clientes</h1>
+<br>
+
+<button class="btn btn-outline-primary btn-agregar" @onclick="Agregar">Agregar</button>
+<br>
+<br>
+
+<button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button>
+
+<br>
+
+@if (clientes != null)
+{
+    <br>
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Nacionalidad</th>
+                <th scope="col">Cédula</th>
+                <th scope="col">Ocupación</th>
+                <th scope="col">Pasaporte</th>
+                <th scope="col">Licencia</th>
+                <th scope="col">Fecha Expiración Licencia</th>
+                <th class="btn-edicion"></th>
+                <th class="btn-eliminacion"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var clien in clientes)
+            {
+                <tr>
+                    <td scope="row">@clien.Id</td>
+                    <td scope="row">@clien.Nombre</td>
+                    <td scope="row">@clien.Direccion</td>
+                    <td scope="row">@clien.Telefono</td>
+                    <td scope="row">@clien.Nacionalidad</td>
+                    <td scope="row">@clien.Cedula</td>
+                    <td scope="row">@clien.Ocupacion</td>
+                    <td scope="row">@clien.Pasaporte</td>
+                    <td scope="row">@clien.Licencia</td>
+                    <td scope="row">@clien.FechaExpiracionLicencia.ToString("dd/MM/yyyy")</td>
+                    <td scope="row" class="btn-edicion">
+                        <button class="btn btn-outline-warning" @onclick="()=>Editar(clien.Id)">Editar</button>
+                    </td>
+                    <td scope="row" class="btn-eliminacion">
+                        <th scope="row"><button class="btn btn-outline-danger " @onclick="()=>MostrarConfirmacionEliminar(clien.Id)">Eliminar</button></th>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay clientes registrados...</p>
+}
+
+
+
+
+
+
+
+@if (confirmacionVisible)
+{
+    <div>
+        <span>¿Estás seguro de que deseas eliminar este cliente?</span>
+        <button class="btn btn-outline-danger" @onclick="ConfirmarEliminarCliente">Eliminar</button>
+        <button class="btn btn-outline-secondary" @onclick="CancelarEliminarCliente">Cancelar</button>
+    </div>
+}
+
+
+@code
+{
+    public List<ClienteRecord>? clientes { get; set; }
+    bool confirmacionVisible = false;
+    int clienteIdAEliminar = 0;
+    public string filtroNombre { get; set; }
+    string nombreBusqueda = string.Empty;
+    List<ClienteRecord>? resultadosBusqueda;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarClientes();
+    }
+
+    public void Agregar()
+    {
+        urlHelper.NavigateTo("/clientes/crear", false);
+    }
+
+    public void Editar(int Id)
+    {
+        urlHelper.NavigateTo($"/clientes/editar/{Id}", false);
+    }
+
+    private async Task MostrarConfirmacionEliminar(int clienteId)
+    {
+        clienteIdAEliminar = clienteId;
+        confirmacionVisible = true;
+    }
+
+    private void CancelarEliminarCliente()
+    {
+        confirmacionVisible = false;
+        clienteIdAEliminar = 0;
+    }
+
+    private async Task ConfirmarEliminarCliente()
+    {
+        var resultado = await ClienteManager.DeleteAsync(clienteIdAEliminar);
+        if (resultado.Succeeded)
+        {
+            await CargarClientes();
+        }
+        else
+        {
+            // Manejar el error
+        }
+
+        confirmacionVisible = false;
+        clienteIdAEliminar = 0;
+    }
+
+    private async Task CargarClientes()
+    {
+        var resultado = await ClienteManager.GetAsync();
+
+        if (resultado.Succeeded)
+        {
+            if (!string.IsNullOrEmpty(filtroNombre))
+            {
+                clientes = resultado.Items
+                    .Where(c => c.Nombre.ToLower().Contains(filtroNombre.ToLower()))
+                    .ToList();
+            }
+            else
+            {
+                clientes = resultado.Items.ToList();
+            }
+        }
+        else
+        {
+            // Manejar el error
+        }
+    }
+
+    private void MostrarMensajeError(string mensaje)
+    {
+        // Aquí puedes implementar la lógica para mostrar el mensaje de error al usuario
+        // Por ejemplo, mostrar un cuadro de diálogo, mostrar una notificación, etc.
+        Console.WriteLine(mensaje);
+    }
+
+    private async Task Print()
+    {
+        await JSRuntime.InvokeVoidAsync("print");
+    }
+}

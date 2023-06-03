@@ -1,0 +1,25 @@
+﻿@page "/Index"
+
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@attribute [Authorize(Roles="Administrador, Empleado")]
+
+<AuthorizeView>
+    <Authorized>
+        <h1>Bienvenido @context.User.Identity!.Name</h1>
+    </Authorized>
+</AuthorizeView>
+
+
+<PageTitle >Aridio Renta Car</PageTitle>
+
+<h1 style="color: darkorange;">Aridio Renta Car</h1>
+
+
+
+
+
+
+
+<div style="color:blueviolet">Beta 1.0</div>
+

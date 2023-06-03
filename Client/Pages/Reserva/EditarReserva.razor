@@ -1,0 +1,203 @@
+@inject NavigationManager NavigationManager;
+@page "/reservas/editar/{Id:int}"
+
+
+<h1>Editar Reserva</h1>
+
+<EditForm Model="reserva" OnValidSubmit="ActualizarReserva" novalidate>
+
+
+       <div class="form-group">
+        <label>Fecha de inicio</label>
+        <input type="date" class="form-control" @bind="reserva.FechaInicio" />
+    </div>
+<br>
+    <div class="form-group">
+        <label>Fecha culminacion</label>
+        <input type="date" class="form-control" @bind="reserva.FechaFin" />
+    </div>
+<br>
+    <div class="form-group">
+        <label>Vehiculo</label>
+        <select @bind="SelectedVehicleId">
+            <option value="0">Seleccione vehiculo</option>
+            @if(VehiculosRegistrados != null && VehiculosRegistrados.Items != null)
+            {
+            @foreach (var vehiculo in VehiculosRegistrados.Items)
+            {
+                <option value="@vehiculo.Id">@($"{vehiculo.Marca} {vehiculo.Modelo}")</option>
+            }
+            }
+
+        </select>
+    </div>
+<br>
+    <div class="form-group">
+        <label>Cliente</label>
+        <select @bind="SelectedClientId">
+            <option value="0">Seleccione cliente</option>
+            @if(ClientesRegistrados != null && ClientesRegistrados.Items != null)
+            {
+            @foreach (var cliente in ClientesRegistrados.Items)
+            {
+                <option value="@cliente.Id">@($"{cliente.Nombre} {cliente.Cedula}")</option>
+            }
+            }
+
+        </select>
+    </div>
+<br>
+    <div class="form-group">
+        <label for="duracion">Duración de la renta ("Dias"):</label>
+        <input type="number" id="duracion" @bind="reserva.Dias"  readonly/>
+    </div>
+<br>
+    <div class="form-group">
+        <label for="pagado">Precio renta ("Dias")</label>
+        <input type="number" id="pagado" @bind="reserva.precioRenta" />
+    </div>
+<br>
+<br>
+    <div class="form-group">
+        <label for="preciototal">Precio total a pagar:</label>
+        <input type="number" id="presiototal" value="@TotalRentalPrice" readonly />
+    </div>
+<br>
+
+<div class="form-group">
+    <label for="">Forma de pago</label>
+        <select @bind="reserva.Pago">
+        <option value="0">Seleccione forma de pago</option>
+        @foreach (var pagos in Pagos)
+        {
+            <option value="@pagos.Id">@pagos.Pago</option>
+        }
+    </select>
+</div>
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
+
+@code {
+    private ReservaUpdateRequest reserva = new ReservaUpdateRequest();
+
+    [Parameter]
+    public int id { get; set; }
+     private int SelectedVehicleId { get; set; }
+    private ResultList<VehiculoRecord>? VehiculosRegistrados { get; set; }
+    private string? ErrorMessage {get; set;}
+
+    private int SelectedClientId {get; set;}
+    private ResultList<ClienteRecord>? ClientesRegistrados {get; set;}
+
+    private decimal TotalRentalPrice => reserva.PrecioTotal * reserva.Dias;
+
+    private List<ReservaRecord> Pagos {get; set;} = new List<ReservaRecord>()
+        {
+            new ReservaRecord {Id = 1, Pago = "Efectivo" },
+            new ReservaRecord {Id = 2, Pago = "Tarjeta" },
+        };
+
+
+    protected override async Task OnInitializedAsync()
+    {
+    var result = await ReservaManager.GetByIdAsync(id);
+    if (result.Succeeded)
+    {
+        var reservaRecord = result.Data;
+        
+        // Convertir ReservaRecord a ReservaRecord
+        var reservaUpdateRequest = new ReservaUpdateRequest
+        {
+            Id = reservaRecord.Id,
+            FechaInicio = reservaRecord.FechaInicio,
+            FechaFin = reservaRecord.FechaFin,
+            VehiculoId = reservaRecord.VehiculoId,
+            ClienteId = reservaRecord.ClienteId,
+            Dias = reservaRecord.Dias,
+            PrecioTotal = reservaRecord.PrecioTotal,
+            precioRenta = reservaRecord.precioRenta,
+            Pago = reservaRecord.Pago,
+
+        };
+        
+        reserva = reservaUpdateRequest;
+    }
+
+           try
+    {
+        VehiculosRegistrados = await VehiculoManager.GetAsync() ?? new ResultList<VehiculoRecord>();
+    }
+    catch (Exception e)
+    {
+        ErrorMessage = "Ocurrió un error al obtener los vehículos: " + e.Message;
+        VehiculosRegistrados = new ResultList<VehiculoRecord>();
+    }
+
+    try
+    {
+        ClientesRegistrados = await ClienteManager.GetAsync() ?? new ResultList<ClienteRecord>();
+    }
+    catch (Exception e)
+    {
+        ErrorMessage = "Ocurrió un error al obtener los clientes: " + e.Message;
+        ClientesRegistrados = new ResultList<ClienteRecord>();
+    }
+        {
+            // Manejar el caso en el que no se pueda obtener el cliente por Id
+        }
+    }
+
+private async Task ActualizarReserva()
+{
+    var result = await ReservaManager.UpdateAsync(id, reserva);
+    if (result.Succeeded)
+    {
+        // Agregar un retraso antes de la redirección
+        NavigationManager.NavigateTo("/reservas");
+    }
+    else
+    {
+        // Manejar el caso en el que la actualización no sea exitosa
+    }
+}
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/reservas");
+    }
+
+
+private void AsignarValoresSeleccionados()
+{
+    if (SelectedVehicleId != 0)
+    {
+        var vehiculoSeleccionado = VehiculosRegistrados?.Items.FirstOrDefault(v => v.Id == SelectedVehicleId);
+        if (vehiculoSeleccionado != null)
+        {
+            reserva.VehiculoId = SelectedVehicleId;
+            // Realizar la reserva con el vehículo seleccionado
+            // ...
+        }
+    }
+
+    if (SelectedClientId != 0)
+    {
+        var clienteSeleccionado = ClientesRegistrados?.Items.FirstOrDefault(c => c.Id == SelectedClientId);
+        if (clienteSeleccionado != null)
+        {
+            reserva.ClienteId = SelectedClientId;
+            // Realizar la reserva con el cliente seleccionado
+            // ...
+        }
+    }
+
+
+}
+
+}
+
+
+
+

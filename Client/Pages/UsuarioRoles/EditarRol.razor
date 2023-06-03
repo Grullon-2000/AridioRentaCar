@@ -1,0 +1,86 @@
+@inject NavigationManager NavigationManager;
+@inject IUsuarioRolManager UsuarioRolManager
+@page "/roles/editar/{Id:int}"
+
+
+<h1>Editar rol</h1>
+
+<EditForm Model="Rol" OnValidSubmit="ActualizarRol" novalidate>
+
+
+    <div class="form-group">
+        <label>Nombre</label>
+        <InputText class="form-control" @bind-Value="Rol.Nombre"></InputText>
+    </div>
+
+    <div class="form-group">
+        <InputCheckbox id="ckbCrear" @bind-Value="Rol.PermisoParaCrear"/>
+        <label for="ckbCrear">Crear</label>
+    </div>
+
+    <div class="form-group">
+        <InputCheckbox id="ckbEditar" @bind-Value="Rol.PermisoParaEditar"/>
+        <label for="ckbEditar">Editar</label>
+    </div>
+
+    <div class="form-group">
+        <InputCheckbox id="ckbEliminar" @bind-Value="Rol.PermisoParaEliminar"/>
+        <label for="ckbEliminar">Eliminar</label>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
+
+@code {
+    private UsuarioRolUpdateRequest Rol = new UsuarioRolUpdateRequest();
+
+    [Parameter]
+    public int id { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+    var result = await UsuarioRolManager.GetByIdAsync(id);
+    if (result.Succeeded)
+    {
+        var UsuarioRolRecord = result.Data;
+        
+        // Convertir ClienteRecord a ClienteUpdateRequest
+        var usuarioRolUpdateRequest = new UsuarioRolUpdateRequest
+        {
+            Id = UsuarioRolRecord.Id,
+            Nombre = UsuarioRolRecord.Nombre,
+            PermisoParaCrear = UsuarioRolRecord.PermisoParaCrear,
+            PermisoParaEditar = UsuarioRolRecord.PermisoParaEditar,
+            PermisoParaEliminar = UsuarioRolRecord.PermisoParaEliminar,
+
+        };
+        
+        Rol = usuarioRolUpdateRequest;
+    }
+        {
+            // Manejar el caso en el que no se pueda obtener el cliente por Id
+        }
+    }
+
+private async Task ActualizarRol()
+{
+    var result = await UsuarioRolManager.UpdateAsync(id, Rol);
+    if (result.Succeeded)
+    {
+        // Agregar un retraso antes de la redirección
+        NavigationManager.NavigateTo("/roles");
+    }
+    else
+    {
+        // Manejar el caso en el que la actualización no sea exitosa
+    }
+}
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/roles");
+    }
+}

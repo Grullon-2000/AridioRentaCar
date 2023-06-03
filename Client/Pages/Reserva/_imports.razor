@@ -1,0 +1,18 @@
+@using Client.Managers;
+@using Aridio_Rent_A_Car.Shared.Records;
+@using Aridio_Rent_A_Car.Shared.Requests;
+@using Aridio_Rent_A_Car.Shared.Wrapper;
+@inject IReservaManager ReservaManager;
+@inject IVehiculoManager VehiculoManager;
+@inject IClienteManager ClienteManager;
+
+
+@inject NavigationManager NavigationManager;
+
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@attribute [Authorize(Roles="Administrador, Empleado")]
+
+
+
+

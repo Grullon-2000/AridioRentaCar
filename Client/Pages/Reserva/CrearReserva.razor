@@ -1,0 +1,277 @@
+@page "/reservas/crear"
+@page "/reservas/eliminar/{Id:int}"
+
+<EditForm Model="@res"  OnInvalidSubmit="Send">
+<h1>@Titulo</h1>
+<DataAnnotationsValidator/>
+<ValidationSummary/>
+    <div class="form-group">
+        <label>Fecha de inicio</label>
+        <input type="date" class="form-control" @bind="res.FechaInicio" />
+    </div>
+<br>
+    <div class="form-group">
+        <label>Fecha culminacion</label>
+        <input type="date" class="form-control" @bind="res.FechaFin" />
+    </div>
+<br>
+    <div class="form-group">
+        <label>Vehiculo</label>
+        <select @bind="SelectedVehicleId">
+            <option value="0">Seleccione vehiculo</option>
+            @if(VehiculosRegistrados != null && VehiculosRegistrados.Items != null)
+            {
+            @foreach (var vehiculo in VehiculosRegistrados.Items)
+            {
+                <option value="@vehiculo.Id">@($"{vehiculo.Marca} {vehiculo.Modelo}")</option>
+            }
+            }
+
+        </select>
+    </div>
+<br>
+    <div class="form-group">
+        <label>Cliente</label>
+        <select @bind="SelectedClientId">
+            <option value="0">Seleccione cliente</option>
+            @if(ClientesRegistrados != null && ClientesRegistrados.Items != null)
+            {
+            @foreach (var cliente in ClientesRegistrados.Items)
+            {
+                <option value="@cliente.Id">@($"{cliente.Nombre} {cliente.Cedula}")</option>
+            }
+            }
+
+        </select>
+    </div>
+<br>
+    <div class="form-group">
+        <label for="duracion">Duración de la renta ("Dias"):</label>
+        <input type="number" id="duracion" @bind="res.Dias"  readonly/>
+    </div>
+<br>
+    <div class="form-group">
+        <label for="pagado">Precio renta ("Dias")</label>
+        <input type="number" id="pagado" @bind="res.precioRenta" />
+    </div>
+<br>
+<br>
+    <div class="form-group">
+        <label for="preciototal">Precio total a pagar:</label>
+        <input type="number" id="presiototal" value="@TotalRentalPrice" readonly />
+    </div>
+<br>
+
+<div class="form-group">
+    <label for="">Forma de pago</label>
+        <select @bind="res.Pago">
+        <option value="0">Seleccione forma de pago</option>
+        @foreach (var pagos in Pagos)
+        {
+            <option value="@pagos.Id">@pagos.Pago</option>
+        }
+    </select>
+</div>
+
+
+<br>
+  
+
+    <button type="submit" class="btn btn-success" @onclick="Send">Ok</button>
+</EditForm>
+
+@code
+{
+    [Parameter]
+
+    public int Id {get; set;} = 0;
+
+    public string Titulo => Id>0? "Editar reservas":"Crear reservas";
+
+    public ReservaUpdateRequest res {get; set;} = new ReservaUpdateRequest();
+
+    private int SelectedVehicleId { get; set; }
+    private ResultList<VehiculoRecord>? VehiculosRegistrados { get; set; }
+    private string? ErrorMessage {get; set;}
+
+    private int SelectedClientId {get; set;}
+    private ResultList<ClienteRecord>? ClientesRegistrados {get; set;}
+
+    private List<ReservaRecord> Pagos {get; set;} = new List<ReservaRecord>()
+        {
+            new ReservaRecord {Id = 1, Pago = "Efectivo" },
+            new ReservaRecord {Id = 2, Pago = "Tarjeta" },
+        };
+
+
+    private decimal TotalRentalPrice => res.PrecioTotal * res.Dias;
+
+    
+    // Clase Factura
+public class Factura
+{
+    public int NumeroFactura { get; set; }
+    public DateTime Fecha { get; set; }
+    public ClienteRecord Cliente { get; set; }
+    public VehiculoRecord Vehiculo { get; set; }
+    public DateTime FechaInicio { get; set; }
+    public DateTime FechaFin { get; set; }
+    public int Dias { get; set; }
+    public decimal PrecioRenta { get; set; }
+    public decimal PrecioTotal { get; set; }
+    public string Pago { get; set; }
+}
+
+
+
+protected override async Task OnInitializedAsync()
+{
+       try
+    {
+        VehiculosRegistrados = await VehiculoManager.GetAsync() ?? new ResultList<VehiculoRecord>();
+    }
+    catch (Exception e)
+    {
+        ErrorMessage = "Ocurrió un error al obtener los vehículos: " + e.Message;
+        VehiculosRegistrados = new ResultList<VehiculoRecord>();
+    }
+
+    try
+    {
+        ClientesRegistrados = await ClienteManager.GetAsync() ?? new ResultList<ClienteRecord>();
+    }
+    catch (Exception e)
+    {
+        ErrorMessage = "Ocurrió un error al obtener los clientes: " + e.Message;
+        ClientesRegistrados = new ResultList<ClienteRecord>();
+    }
+    
+        
+     
+
+    if(Id!=0){
+        var resultado = await ReservaManager.GetByIdAsync(Id);
+        if(resultado.Succeeded){
+            res.Id = resultado.Data.Id;
+            res.FechaInicio = resultado.Data.FechaInicio;
+            res.FechaFin = resultado.Data.FechaFin;
+            res.VehiculoId = resultado.Data.VehiculoId;
+            res.ClienteId = resultado.Data.ClienteId;
+            res.Dias = resultado.Data.Dias;
+            res.PrecioTotal = resultado.Data.PrecioTotal;
+            res.precioRenta = resultado.Data.precioRenta;
+            res.Pago = resultado.Data.Pago;
+            StateHasChanged();
+        }
+    }
+}
+
+
+
+private void AsignarValoresSeleccionados()
+{
+    if (SelectedVehicleId != 0)
+    {
+        var vehiculoSeleccionado = VehiculosRegistrados?.Items.FirstOrDefault(v => v.Id == SelectedVehicleId);
+        if (vehiculoSeleccionado != null)
+        {
+            res.VehiculoId = SelectedVehicleId;
+            // Realizar la reserva con el vehículo seleccionado
+            // ...
+        }
+    }
+
+    if (SelectedClientId != 0)
+    {
+        var clienteSeleccionado = ClientesRegistrados?.Items.FirstOrDefault(c => c.Id == SelectedClientId);
+        if (clienteSeleccionado != null)
+        {
+            res.ClienteId = SelectedClientId;
+            // Realizar la reserva con el cliente seleccionado
+            // ...
+        }
+    }
+
+
+}
+
+
+
+private void VerificarFormaDePagoSeleccionada()
+{
+    var pagoSeleccionado = Pagos.FirstOrDefault(p => p.Id.ToString() == res.Pago);
+    if (pagoSeleccionado != null)
+    {
+        res.NombrePago = pagoSeleccionado.Pago;
+        Console.WriteLine("Forma de pago seleccionada: " + pagoSeleccionado.Pago);
+    }
+    else
+    {
+        Console.WriteLine("No se ha seleccionado una forma de pago válida.");
+    }
+}
+
+
+
+public async Task Send()
+{
+    res.Dias = (int)(res.FechaFin - res.FechaInicio).TotalDays; 
+    res.PrecioTotal = res.Dias * res.precioRenta; 
+
+    AsignarValoresSeleccionados();
+    
+    VerificarFormaDePagoSeleccionada();
+
+
+
+try
+{
+    // Código para guardar los cambios de entidad
+    if (Id != 0)
+    {
+        var resultado = await ReservaManager.UpdateAsync(Id, res);
+        if (resultado.Succeeded)
+        {
+            urlHelper.NavigateTo("/reservas");
+            return;
+        }
+        else
+        {
+            // Si la actualización no tiene éxito, puedes manejar el error de alguna manera,
+            // como mostrar un mensaje de error al usuario o registrar el error.
+            Console.WriteLine("Error al actualizar la reserva: " + resultado.Message?.FirstOrDefault());
+        }
+    }
+    else
+    {
+        var resultado = await ReservaManager.CreateAsync(res);
+        if (resultado.Succeeded)
+        {
+            urlHelper.NavigateTo("/reservas");
+            return;
+        }
+        else
+        {
+            // Si la creación no tiene éxito, puedes manejar el error de alguna manera,
+            // como mostrar un mensaje de error al usuario o registrar el error.
+            Console.WriteLine("Error al crear la reserva: " + resultado.Message?.FirstOrDefault());
+        }
+    }
+}
+catch (Exception ex)
+{
+    // Agrega un punto de interrupción en esta línea para inspeccionar la excepción
+    Console.WriteLine("Excepción capturada. Pausando la ejecución.");
+    Console.WriteLine("Presiona Enter para continuar...");
+
+    Console.ReadLine(); // Pausa la ejecución hasta que se presione Enter
+
+    // Capturar la excepción interna y mostrar su mensaje
+    Console.WriteLine("Excepción interna al guardar los cambios de entidad: " + ex.Message);
+}
+
+
+
+}
+
+}

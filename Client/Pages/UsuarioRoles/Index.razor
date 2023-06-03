@@ -1,0 +1,118 @@
+@page "/roles"
+
+@inject IUsuarioRolManager UsuarioRolManager
+@inject NavigationManager urlHelper
+
+<h1>Registro de roles</h1>
+<br>
+<button class="btn btn-outline-primary" @onclick="Agregar">Agregar</button>
+<br>
+
+@if (Roles != null)
+{
+    <br>
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Cargo</th>
+                <th scope="col">Permiso para Crear</th>
+                <th scope="col">Permiso para Editar</th>
+                <th scope="col">Permiso para Eliminar</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rol in Roles)
+            {
+                <tr>
+                    <th scope="row">@rol.Id</th>
+                    <th scope="row">@rol.Nombre</th>
+                    <th scope="row">@rol.PermisoParaCrear</th>
+                    <th scope="row">@rol.PermisoParaEditar</th>
+                    <th scope="row">@rol.PermisoParaEliminar</th>
+                    <th scope="row"><button class="btn btn-outline-warning" @onclick="()=>Editar(rol.Id)">Editar</button></th>
+                    <th scope="row"><button class="btn btn-outline-danger" @onclick="()=>MostrarConfirmacionEliminar(rol.Id)">Eliminar</button></th>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Cargando...</p>
+}
+
+@if (confirmacionVisible)
+{
+    <div>
+        <span>¿Estás seguro de que deseas eliminar este Rol?</span>
+        <button class="btn btn-outline-danger" @onclick="ConfirmarEliminarRoles">Eliminar</button>
+        <button class="btn btn-outline-secondary" @onclick="CancelarEliminarRoles">Cancelar</button>
+    </div>
+}
+
+@code
+{
+    public List<UsuarioRolRecord>? Roles { get; set; }
+
+    bool confirmacionVisible = false;
+    int rolIdAEliminar = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarRoles();
+    }
+
+    public void Agregar()
+    {
+        urlHelper.NavigateTo("/roles/crear", false);
+    }
+
+    public void Editar(int Id)
+    {
+        urlHelper.NavigateTo($"/roles/editar/{Id}", false);
+    }
+
+    private async Task MostrarConfirmacionEliminar(int rolId)
+    {
+        rolIdAEliminar = rolId;
+        confirmacionVisible = true;
+    }
+
+    private void CancelarEliminarRoles()
+    {
+        confirmacionVisible = false;
+        rolIdAEliminar = 0;
+    }
+
+    private async Task ConfirmarEliminarRoles()
+    {
+        var resultado = await UsuarioRolManager.DeleteAsync(rolIdAEliminar);
+        if (resultado.Succeeded)
+        {
+            await CargarRoles();
+        }
+        else
+        {
+            // Manejar el error
+        }
+
+        confirmacionVisible = false;
+        rolIdAEliminar = 0;
+    }
+
+    private async Task CargarRoles()
+    {
+        var resultado = await UsuarioRolManager.GetAsync();
+        if (resultado.Succeeded)
+        {
+            Roles = resultado.Items.ToList();
+        }
+        else
+        {
+            // Manejar el error
+        }
+    }
+}

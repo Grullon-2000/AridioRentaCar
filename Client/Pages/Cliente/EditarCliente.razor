@@ -1,0 +1,113 @@
+@inject NavigationManager NavigationManager;
+@page "/clientes/editar/{id:int}"
+
+
+<h1>Editar Cliente</h1>
+
+<EditForm Model="cliente" OnValidSubmit="ActualizarCliente" novalidate>
+
+
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <InputText id="nombre" class="form-control" @bind-Value="cliente.Nombre" />
+    </div>
+
+    <div class="form-group">
+        <label for="direccion">Dirección:</label>
+        <InputText id="direccion" class="form-control" @bind-Value="cliente.Direccion" />
+    </div>
+
+    <div class="form-group">
+        <label for="telefono">Teléfono:</label>
+        <InputText id="telefono" class="form-control" @bind-Value="cliente.Telefono" />
+    </div>
+
+    <div class="form-group">
+        <label for="nacionalidad">Nacionalidad:</label>
+        <InputText id="nacionalidad" class="form-control" @bind-Value="cliente.Nacionalidad" />
+    </div>
+
+    <div class="form-group">
+        <label for="cedula">Cédula:</label>
+        <InputText id="cedula" class="form-control" @bind-Value="cliente.Cedula" />
+    </div>
+
+    <div class="form-group">
+        <label for="ocupacion">Ocupación:</label>
+        <InputText id="ocupacion" class="form-control" @bind-Value="cliente.Ocupacion" />
+    </div>
+
+    <div class="form-group">
+        <label for="pasaporte">Pasaporte:</label>
+        <InputText id="pasaporte" class="form-control" @bind-Value="cliente.Pasaporte" />
+    </div>
+
+    <div class="form-group">
+        <label for="licencia">Licencia:</label>
+        <InputText id="licencia" class="form-control" @bind-Value="cliente.Licencia" />
+    </div>
+
+    <div class="form-group">
+        <label for="fechaExpiracionLicencia">Fecha de Expiración de Licencia:</label>
+        <InputDate id="fechaExpiracionLicencia" class="form-control" @bind-Value="cliente.FechaExpiracionLicencia" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
+
+@code {
+    private ClienteUpdateRequest cliente = new ClienteUpdateRequest();
+
+    [Parameter]
+    public int id { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+    var result = await ClienteManager.GetByIdAsync(id);
+    if (result.Succeeded)
+    {
+        var clienteRecord = result.Data;
+        
+        // Convertir ClienteRecord a ClienteUpdateRequest
+        var clienteUpdateRequest = new ClienteUpdateRequest
+        {
+            Id = clienteRecord.Id,
+            Nombre = clienteRecord.Nombre,
+            Direccion = clienteRecord.Direccion,
+            Telefono = clienteRecord.Telefono,
+            Nacionalidad = clienteRecord.Nacionalidad,
+            Cedula = clienteRecord.Cedula,
+            Ocupacion = clienteRecord.Ocupacion,
+            Pasaporte = clienteRecord.Pasaporte,
+            Licencia = clienteRecord.Licencia,
+            FechaExpiracionLicencia = clienteRecord.FechaExpiracionLicencia
+        };
+        
+        cliente = clienteUpdateRequest;
+    }
+        {
+            // Manejar el caso en el que no se pueda obtener el cliente por Id
+        }
+    }
+
+private async Task ActualizarCliente()
+{
+    var result = await ClienteManager.UpdateAsync(id, cliente);
+    if (result.Succeeded)
+    {
+        // Agregar un retraso antes de la redirección
+        NavigationManager.NavigateTo("/clientes");
+    }
+    else
+    {
+        // Manejar el caso en el que la actualización no sea exitosa
+    }
+}
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/clientes");
+    }
+}

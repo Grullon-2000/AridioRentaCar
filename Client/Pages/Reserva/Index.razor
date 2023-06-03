@@ -1,0 +1,249 @@
+@page "/reservas"
+@inject IReservaManager ReservaManager
+@inject NavigationManager urlHelper
+@inject IJSRuntime JSRuntime
+@inject IJSRuntime JSRuntime
+@using Blazorise
+@* @using Blazorise.Bootstrap *@
+@using Blazorise.Icons.FontAwesome
+
+
+
+
+<h1 class="btn-registro">Reservas de vehiculos</h1>
+<br>
+<button class="btn btn-outline-primary btn-agregar" @onclick="Agregar">Agregar</button>
+
+<br>
+<br>
+
+<button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button>
+
+<br>
+
+@if (reservas != null)
+{
+    <br>
+    <table class="table table-hover table-dark btn-imprimir">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Fecha Inicio</th>
+                <th scope="col">Fecha Final</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Vehiculo</th>
+                <th scope="col">Dias</th>
+                <th scope="col">Precio Renta</th>
+                <th scope="col">Precio total</th>
+                <th scope="col">Forma de pago</th>
+                <th class="btn-edicion"></th>
+                <th class="btn-eliminacion"></th>
+                <th class="btn-factura"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var res in reservas)
+            {
+                <tr>
+                    <th scope="row">@res.Id</th>
+                    <th scope="row">@res.FechaInicio</th>
+                    <th scope="row">@res.FechaFin</th>
+                    <th scope="row">@res.Cliente.Nombre</th>
+                    <th scope="row">@res.Vehiculo.Marca</th>
+                    <th scope="row">@res.Dias</th>
+                    <th scope="row">@res.precioRenta</th>
+                    <th scope="row">@res.PrecioTotal</th>
+                    <th scope="row">@res.NombrePago</th>
+                    <th class="btn-edicion" scope="row">
+                        <button class="btn btn-outline-warning" @onclick="()=>Editar(res.Id)">Editar</button>
+                    </th>
+                    <th class="btn-eliminacion" scope="row">
+                        <button class="btn btn-outline-danger" @onclick="()=>MostrarConfirmacionEliminar(res.Id)">Eliminar</button>
+                    </th>
+                    <th class="btn-factura" scope="row">
+                        <button class="btn btn-outline-primary" @onclick="()=>MostrarFactura(res)">Factura</button>
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay reservas registradas...</p>
+}
+
+@if (confirmacionVisible)
+{
+    <div>
+        <span>¿Estás seguro de que deseas eliminar esta reserva?</span>
+        <button class="btn btn-outline-danger" @onclick="ConfirmarEliminarReservas">Eliminar</button>
+        <button class="btn btn-outline-secondary" @onclick="CancelarEliminarReserva">Cancelar</button>
+    </div>
+}
+
+
+<Modal @ref="modalRef" IsOpen="@mostrarModal">
+    <ModalContent Class="modal-content my-custom-modal">
+        <ModalHeader Class="my-custom-modal-header">
+            <h5 style="color: blue;" class="modal-title">Aridio Renta Car</h5>
+        </ModalHeader>
+        <ModalBody Class="my-custom-modal-body">
+            <!-- Contenido del modal -->
+            @if (facturaVisible)
+            {
+                <h2><strong>Detalles de la factura:</strong></h2>
+                <p><strong>Numero Factura: </strong> #@factura.Id</p>
+                <p><strong>Numero Cliente: </strong> #@factura.ClienteId</p>
+                <p><strong>Cliente: </strong> @factura.Cliente.Nombre</p>
+                <p><strong>Cedula: </strong> @factura.Cliente.Cedula</p>
+                <p><strong>Teléfono: </strong> @factura.Cliente.Telefono</p>
+                <p><strong>Vehiculo: </strong> @factura.Vehiculo.Marca @factura.Vehiculo.Modelo @factura.Vehiculo.Año</p>
+                <p><strong>Vehiculo Estado: </strong> @factura.Vehiculo.Mensaje</p>
+                <p><strong>Fecha Inicio: </strong> @factura.FechaInicio</p>
+                <p><strong>Fecha Final: </strong> @factura.FechaFin</p>
+                <p><strong>Dias: </strong> @factura.Dias</p>
+                <p><strong>Precio Renta: </strong> @factura.precioRenta</p>
+                <p><strong>Precio Total: </strong> @factura.PrecioTotal</p>
+                <p><strong>Forma de pago: </strong> @factura.NombrePago</p>
+                <br>
+
+<p>CONTRATO DE ALQUILER DE VEHÍCULO
+
+Entre el Propietario del Vehículo y el Arrendatario, se acuerda el alquiler del siguiente vehículo:
+
+Marca: [@factura.Vehiculo.Marca]
+Modelo: [@factura.Vehiculo.Modelo]
+Año: [@factura.Vehiculo.Año]
+Matrícula: [@factura.Vehiculo.NumeroPlaca]
+Plazo de alquiler: [@factura.FechaInicio] a [@factura.FechaFin].
+
+Tarifa de alquiler: [$RD].
+
+Responsabilidades:
+Uso legal del vehículo.
+Mantenimiento y cuidado adecuado.
+Seguro de automóvil válido.
+
+Terminación anticipada: [@factura.Dias] días de notificación por escrito.
+
+Ley aplicable y jurisdicción: [Republica Dominicana], [Jima Abajo, La Vega].</p>
+
+<p><strong>Firmas:</strong></p>
+<p>Propietario del Vehículo: ________________________</p>
+<p>Arrendatario: ________________________</p>
+
+
+<div><button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button></div>
+                
+                
+            }
+        </ModalBody>
+    </ModalContent>
+</Modal>
+
+
+
+
+
+
+
+@code
+{
+    public List<ReservaRecord>? reservas { get; set; }
+    bool confirmacionVisible = false;
+    int reservaIdAEliminar = 0;
+    private bool facturaVisible = false;
+    private ReservaRecord factura;
+    private Modal modalRef;
+    private bool mostrarModal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarReservas();
+    }
+
+    public void Agregar()
+    {
+        urlHelper.NavigateTo("/reservas/crear", false);
+    }
+
+    public void Editar(int Id)
+    {
+        urlHelper.NavigateTo($"/reservas/editar/{Id}", false);
+    }
+
+    private async Task MostrarConfirmacionEliminar(int reservaId)
+    {
+        reservaIdAEliminar = reservaId;
+        confirmacionVisible = true;
+    }
+
+    private void CancelarEliminarReserva()
+    {
+        confirmacionVisible = false;
+        reservaIdAEliminar = 0;
+    }
+
+    private async Task ConfirmarEliminarReservas()
+    {
+        var resultado = await ReservaManager.DeleteAsync(reservaIdAEliminar);
+        if (resultado.Succeeded)
+        {
+            await CargarReservas();
+        }
+        else
+        {
+            // Manejar el error
+        }
+
+        confirmacionVisible = false;
+        reservaIdAEliminar = 0;
+    }
+
+    private async Task CargarReservas()
+    {
+        var resultado = await ReservaManager.GetAsync();
+        if (resultado.Succeeded)
+        {
+            reservas = resultado.Items.ToList();
+        }
+        else
+        {
+            // Manejar el error
+        }
+    }
+
+    private async Task Print()
+    {
+        await JSRuntime.InvokeVoidAsync("print");
+    }
+
+    private void MostrarFactura(ReservaRecord reserva)
+    {
+        factura = reserva;
+        facturaVisible = true;
+        modalRef.Show();
+    }
+
+
+
+        private async Task CerrarFactura()
+    {
+        await JSRuntime.InvokeVoidAsync("CerrarModalFacturaAsync");
+    }
+
+    private void AlternarModal()
+    {
+        mostrarModal = !mostrarModal;
+        if (mostrarModal)
+        {
+            modalRef.Show();
+        }
+        else
+        {
+            modalRef.Hide();
+        }
+    }
+
+}

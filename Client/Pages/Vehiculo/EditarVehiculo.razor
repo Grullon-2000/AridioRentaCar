@@ -1,0 +1,113 @@
+@inject NavigationManager NavigationManager;
+@page "/vehiculo/editar/{id:int}"
+
+
+<h1>Editar Vehiculo</h1>
+
+<EditForm Model="Vehi" OnValidSubmit="ActualizarVehiculo" novalidate>
+
+
+    <div class="form-group">
+        <label>Marca</label>
+        <InputText class="form-control" @bind-Value="Vehi.Marca"></InputText>
+    </div>
+
+    <div class="form-group">
+        <label>Modelo</label>
+        <InputText class="form-control" @bind-Value="Vehi.Modelo"></InputText>
+    </div>
+
+    <div class="form-group">
+        <label>Año</label>
+        <input type="number" class="form-control" @bind ="Vehi.Año" />
+    </div>
+
+    <div class="form-group">
+        <label>Color</label>
+        <InputText class="form-control" @bind-Value="Vehi.Color"></InputText>
+    </div>
+    <div class="form-group">
+        <label>Numero de placa</label>
+        <InputText class="form-control" @bind-Value="Vehi.NumeroPlaca"></InputText>
+    </div>
+    <div class="form-group">
+        <label>Precio por dia</label>
+        <input type="number" class="form-control" @bind="Vehi.PrecioPorDia" />
+    </div>
+    <div class="form-group">
+        <InputCheckbox id="ckbActivo" @bind-Value="Vehi.Activo"/>
+        <label for="ckbActivo">Activo</label>
+    </div>
+    <br>
+        <div class="form-group">
+        <InputCheckbox id="ckbInactivo" @bind-Value="Vehi.Inactivo"/>
+        <label for="ckbInactivo">Inactivo</label>
+    </div>
+    <br>
+    <div class="form-group">
+        <label>Estado de Vehiculo</label>
+        <br>
+        <textarea name="" id="" cols="50" rows="4" @bind="Vehi.Mensaje"></textarea>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
+
+@code {
+    private VehiculoUpdateRequest Vehi = new VehiculoUpdateRequest();
+
+    [Parameter]
+    public int id { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+    var result = await VehiculoManager.GetByIdAsync(id);
+    if (result.Succeeded)
+    {
+        var vehiculoRecord = result.Data;
+        
+        // Convertir ClienteRecord a ClienteUpdateRequest
+        var vehiculoUpdateRequest = new VehiculoUpdateRequest
+        {
+            Id = vehiculoRecord.Id,
+            Marca = vehiculoRecord.Marca,
+            Modelo = vehiculoRecord.Modelo,
+            Año = vehiculoRecord.Año,
+            Color = vehiculoRecord.Color,
+            NumeroPlaca = vehiculoRecord.NumeroPlaca,
+            PrecioPorDia = vehiculoRecord.PrecioPorDia,
+            Mensaje = vehiculoRecord.Mensaje,
+            Activo = vehiculoRecord.Activo,
+            Inactivo = vehiculoRecord.Inactivo,
+
+        };
+        
+        Vehi = vehiculoUpdateRequest;
+    }
+        {
+            // Manejar el caso en el que no se pueda obtener el cliente por Id
+        }
+    }
+
+private async Task ActualizarVehiculo()
+{
+    var result = await VehiculoManager.UpdateAsync(id, Vehi);
+    if (result.Succeeded)
+    {
+        // Agregar un retraso antes de la redirección
+        NavigationManager.NavigateTo("/vehiculo");
+    }
+    else
+    {
+        // Manejar el caso en el que la actualización no sea exitosa
+    }
+}
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/vehiculo");
+    }
+}

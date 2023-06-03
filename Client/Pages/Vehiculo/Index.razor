@@ -1,0 +1,215 @@
+@page "/vehiculo"
+
+@inject IVehiculoManager VehiculoManager
+@inject NavigationManager urlHelper
+@inject IJSRuntime JSRuntime
+
+<table  class="table btn-eliminacion">
+    <thead>
+        <tr class= "bg-warning">
+            <th>Vehiculos disponibles:</th>
+            <th>Vehiculos no-disponibles</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+            <tr>
+                <td class= "bg-success btn-eliminacion">
+                    <span>@cantidadAutosActivos</span>
+                </td>
+                
+                <td class= "bg-danger btn-eliminacion">
+                    <span>@cantidadAutosInactivos</span>
+                </td>
+
+            </tr>
+
+    </tbody>
+</table>
+
+
+
+
+
+<br>
+<h1 class="btn-registro" style="color: darkblue;">Vehiculos</h1>
+<br>
+<button class="btn btn-outline-primary btn-agregar" @onclick="Agregar">Agregar</button>
+
+<br>
+<br>
+
+<button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button>
+<br>
+
+@if(Vehiculos != null )
+{
+    <br>
+<table class="table table-hover table-dark">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Marca</th>
+            <th scope="col">Modelo</th>
+            <th scope="col">Año</th>
+            <th scope="col">Color</th>
+            <th scope="col">Placa</th>
+            <th scope="col">PrecioPorDia</th>
+            <th scope="col">Mensaje</th>
+            <th scope="col">Estado Vehiculo</th>
+            <th class="btn-edicion"></th>
+            <th class="btn-eliminacion"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var vehi in Vehiculos)
+        {
+            <tr>
+                <th scope="row">@vehi.Id</th>
+                <th scope="row">@vehi.Marca</th>
+                <th scope="row">@vehi.Modelo</th>
+                <th scope="row">@vehi.Año</th>
+                <th scope="row">@vehi.Color</th>
+                <th scope="row">@vehi.NumeroPlaca</th>
+                <th scope="row">@vehi.PrecioPorDia</th>
+                <th scope="row">@vehi.Mensaje</th>
+                <th scope="row">                        
+                    @if (vehi.Activo)
+                        {
+                            <span class="badge bg-success">Activo</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactivo</span>
+                        }
+                </th>
+                @* <td>
+                    @if (vehi.Inactivo)
+                        {
+                            <span class="badge bg-success">Activo</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactivo</span>
+                        }
+                </td> *@
+                <th class="btn-edicion" scope="row">
+                    <button class="btn btn-outline-warning " @onclick="()=>Editar(vehi.Id)">Editar</button>
+                    
+                </th>
+                    <th class="btn-eliminacion" scope="row"><button class="btn btn-outline-danger " @onclick="()=>MostrarConfirmacionEliminar(vehi.Id)">Eliminar</button></th>
+                    
+                
+            </tr>
+        }
+    </tbody>
+</table>
+}
+else
+{
+    <p>No hay vehiculos registrados...</p>
+}
+
+
+@if (confirmacionVisible)
+{
+    <div>
+        <span>¿Estás seguro de que deseas eliminar este vehiculo?</span>
+        <button class="btn btn-outline-danger" @onclick="ConfirmarEliminarVehiculo">Eliminar</button>
+        <button class="btn btn-outline-secondary" @onclick="CancelarEliminarVehiculo">Cancelar</button>
+    </div>
+}
+
+
+@* <p>Disponible: @cantidadAutosActivos</p>
+<p>No Disponible: @cantidadAutosInactivos</p> *@
+
+@code
+{
+
+    private List<VehiculoRecord>? vehiculos;
+    bool confirmacionVisible = false;
+    int vehiculoIdAEliminar = 0;
+
+    
+    private int cantidadAutosActivos;
+    private int cantidadAutosInactivos;
+
+
+    public List<VehiculoRecord>? Vehiculos { get; set; }
+        protected override async Task OnInitializedAsync()
+        {
+
+
+            await CargarVehiculos();
+
+        }
+
+
+
+        public void Agregar()
+        {
+            urlHelper.NavigateTo("/vehiculo/crear",false);
+        }
+
+            public void Editar(int Id)
+        {
+            urlHelper.NavigateTo($"/vehiculo/editar/{Id}",false);
+        }
+
+private async Task MostrarConfirmacionEliminar(int vehiculoId)
+    {
+        vehiculoIdAEliminar = vehiculoId;
+        confirmacionVisible = true;
+    }
+
+    private void CancelarEliminarVehiculo()
+    {
+        confirmacionVisible = false;
+        vehiculoIdAEliminar = 0;
+    }
+
+    private async Task ConfirmarEliminarVehiculo()
+    {
+        var resultado = await VehiculoManager.DeleteAsync(vehiculoIdAEliminar);
+        if (resultado.Succeeded)
+        {
+            await CargarVehiculos();
+        }
+        else
+        {
+            // Manejar el error
+        }
+
+        confirmacionVisible = false;
+        vehiculoIdAEliminar = 0;
+    }
+
+private async Task CargarVehiculos()
+{
+    var resultado = await VehiculoManager.GetAsync();
+    if (resultado.Succeeded)
+    {
+        Vehiculos = resultado.Items.ToList();
+        cantidadAutosActivos = Vehiculos.Count(v => v.Activo == true);
+        cantidadAutosInactivos = Vehiculos.Count(v => v.Activo == false);
+    }
+    else
+    {
+        // Manejar el error en caso de que la carga de vehículos falle
+    }
+}
+
+
+
+        private async Task Print()
+    {
+        await JSRuntime.InvokeVoidAsync("print");
+    }
+
+
+
+} 
+
+
