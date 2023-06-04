@@ -4,58 +4,58 @@
 
 
 <EditForm Model="@Clien" OnInvalidSubmit="Send">
-<h1>@Titulo</h1>
-<DataAnnotationsValidator/>
-<ValidationSummary/>
-<br>
+    <h1>@Titulo</h1>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
     <div class="form-group">
-        <label>Nombre Completo</label>
-        <InputText class="form-control" @bind-Value="Clien.Nombre"></InputText>
+        <label style="color: blue;" for="nombre-completo">Nombre Completo</label>
+        <InputText id="nombre-completo" class="form-control" @bind-Value="Clien.Nombre"></InputText>
     </div>
-<br>
+
     <div class="form-group">
-        <label>Direccón</label>
-        <InputText class="form-control" @bind-Value="Clien.Direccion"></InputText>
+        <label style="color: blue;" for="direccion">Dirección</label>
+        <InputText id="direccion" class="form-control" @bind-Value="Clien.Direccion"></InputText>
     </div>
-<br>
+
     <div class="form-group">
-        <label>Teléfono</label>
-        <InputText class="form-control" @bind-Value="Clien.Telefono"></InputText>
+        <label style="color: blue;" for="telefono">Teléfono</label>
+        <InputText id="telefono" class="form-control" @bind-Value="Clien.Telefono"></InputText>
     </div>
-<br>
+
     <div class="form-group">
-        <label>Nacionalidad</label>
-        <InputText class="form-control" @bind-Value="Clien.Nacionalidad"></InputText>
+        <label style="color: blue;" for="nacionalidad">Nacionalidad</label>
+        <InputText id="nacionalidad" class="form-control" @bind-Value="Clien.Nacionalidad"></InputText>
     </div>
-<br>
+
     <div class="form-group">
-        <label>Cédula</label>
-        <InputText class="form-control" @bind-Value="Clien.Cedula"></InputText>
+        <label style="color: blue;" for="cedula">Cédula</label>
+        <InputText id="cedula" class="form-control" @bind-Value="Clien.Cedula"></InputText>
     </div>
-<br>
+
     <div class="form-group">
-        <label>Ocupación</label>
-        <InputText class="form-control" @bind-Value="Clien.Ocupacion"></InputText>
+        <label style="color: blue;" for="ocupacion">Ocupación</label>
+        <InputText id="ocupacion" class="form-control" @bind-Value="Clien.Ocupacion"></InputText>
     </div>
-<br>
+
     <div class="form-group">
-        <label>Pasaporte</label>
-        <InputText class="form-control" @bind-Value="Clien.Pasaporte"></InputText>
+        <label style="color: blue;" for="pasaporte">Pasaporte</label>
+        <InputText id="pasaporte" class="form-control" @bind-Value="Clien.Pasaporte"></InputText>
     </div>
-<br>
+
     <div class="form-group">
-        <label>Licencia</label>
-        <InputText class="form-control" @bind-Value="Clien.Licencia"></InputText>
+        <label style="color: blue;" for="licencia">Licencia</label>
+        <InputText id="licencia" class="form-control" @bind-Value="Clien.Licencia"></InputText>
     </div>
-<br>
-<div class="form-group">
-    <label>Fecha de expiracion licencia</label>
-    <input id="fecha-expiracion-licencia" type="text" class="form-control" @ref="dateInput" @bind="@Clien.FechaExpiracionLicencia" />
-</div>
-    <br>
-    <button type="submit" class="btn btn-success" @onclick="Send">Ok</button>
-    <br>
+
+    <div class="form-group">
+        <label style="color: blue;" for="fecha-expiracion-licencia">Fecha de expiración licencia</label>
+        <input id="fecha-expiracion-licencia" type="text" class="form-control" @ref="dateInput" @bind="@Clien.FechaExpiracionLicencia" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" @onclick="Send">Ok</button>
 </EditForm>
+
 
 @code
 {

@@ -3,57 +3,58 @@
 
 
 <EditForm Model="@Vehi" OnInvalidSubmit="Send">
-<h1>@Titulo</h1>
-<DataAnnotationsValidator/>
-<ValidationSummary/>
+    <h1>@Titulo</h1>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
     <div class="form-group">
-        <label>Marca</label>
+        <label style="color: blue;">Marca</label>
         <InputText class="form-control" @bind-Value="Vehi.Marca"></InputText>
     </div>
 
     <div class="form-group">
-        <label>Modelo</label>
+        <label style="color: blue;">Modelo</label>
         <InputText class="form-control" @bind-Value="Vehi.Modelo"></InputText>
     </div>
 
     <div class="form-group">
-        <label>Año</label>
-        <input type="number" class="form-control" @bind ="Vehi.Año" />
+        <label style="color: blue;">Año</label>
+        <input type="number" class="form-control" @bind="@Vehi.Año" />
     </div>
 
     <div class="form-group">
-        <label>Color</label>
+        <label style="color: blue;">Color</label>
         <InputText class="form-control" @bind-Value="Vehi.Color"></InputText>
     </div>
+
     <div class="form-group">
-        <label>Numero de placa</label>
+        <label style="color: blue;">Numero de placa</label>
         <InputText class="form-control" @bind-Value="Vehi.NumeroPlaca"></InputText>
     </div>
+
     <div class="form-group">
-        <label>Precio por dia</label>
-        <input type="number" class="form-control" @bind="Vehi.PrecioPorDia" />
+        <label style="color: blue;">Precio por día</label>
+        <input type="number" class="form-control" @bind="@Vehi.PrecioPorDia" />
     </div>
+
     <div class="form-group">
-        <InputCheckbox id="ckbActivo" @bind-Value="Vehi.Activo"/>
-        <label for="ckbActivo">Activo</label>
+        <InputCheckbox id="ckbActivo" @bind-Value="Vehi.Activo" />
+        <label style="color: blue;" for="ckbActivo">Activo</label>
     </div>
-    <br>
-        <div class="form-group">
-        <InputCheckbox id="ckbInactivo" @bind-Value="Vehi.Inactivo"/>
-        <label for="ckbInactivo">Inactivo</label>
-    </div>
-    <br>
+
     <div class="form-group">
-        <label>Estado de Vehiculo</label>
+        <InputCheckbox id="ckbInactivo" @bind-Value="Vehi.Inactivo" />
+        <label style="color: blue;" for="ckbInactivo">Inactivo</label>
+    </div>
+
+    <div class="form-group">
+        <label style="color: blue;">Estado de Vehículo</label>
         <br>
-        <textarea name="" id="" cols="50" rows="4" @bind="Vehi.Mensaje"></textarea>
+        <textarea cols="50" rows="4" class="form-control" @bind="Vehi.Mensaje"></textarea>
     </div>
 
-<br>
-
-<button type="submit" class="mt-2 btn btn-success" @onclick="Send">Ok</button>
-
-</EditForm>  
+    <button type="submit" class="mt-2 btn btn-success">Ok</button>
+</EditForm>
 
 
 

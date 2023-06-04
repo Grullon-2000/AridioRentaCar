@@ -1,84 +1,79 @@
 @page "/reservas/crear"
 @page "/reservas/eliminar/{Id:int}"
 
-<EditForm Model="@res"  OnInvalidSubmit="Send">
-<h1>@Titulo</h1>
-<DataAnnotationsValidator/>
-<ValidationSummary/>
+<EditForm Model="@res" OnInvalidSubmit="Send">
+    <h1>@Titulo</h1>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
     <div class="form-group">
-        <label>Fecha de inicio</label>
+        <label style="color: blue;">Fecha de inicio</label>
         <input type="date" class="form-control" @bind="res.FechaInicio" />
     </div>
-<br>
+
     <div class="form-group">
-        <label>Fecha culminacion</label>
+        <label style="color: blue;">Fecha culminación</label>
         <input type="date" class="form-control" @bind="res.FechaFin" />
     </div>
-<br>
-    <div class="form-group">
-        <label>Vehiculo</label>
-        <select @bind="SelectedVehicleId">
-            <option value="0">Seleccione vehiculo</option>
-            @if(VehiculosRegistrados != null && VehiculosRegistrados.Items != null)
-            {
-            @foreach (var vehiculo in VehiculosRegistrados.Items)
-            {
-                <option value="@vehiculo.Id">@($"{vehiculo.Marca} {vehiculo.Modelo}")</option>
-            }
-            }
 
+    <div class="form-group">
+        <label style="color: blue;">Vehículo</label>
+        <select class="form-control" @bind="SelectedVehicleId">
+            <option value="0">Seleccione vehículo</option>
+            @if (VehiculosRegistrados != null && VehiculosRegistrados.Items != null)
+            {
+                @foreach (var vehiculo in VehiculosRegistrados.Items)
+                {
+                    <option value="@vehiculo.Id">@($"{vehiculo.Marca} {vehiculo.Modelo}")</option>
+                }
+            }
         </select>
     </div>
-<br>
+
     <div class="form-group">
-        <label>Cliente</label>
-        <select @bind="SelectedClientId">
+        <label style="color: blue;">Cliente</label>
+        <select class="form-control" @bind="SelectedClientId">
             <option value="0">Seleccione cliente</option>
-            @if(ClientesRegistrados != null && ClientesRegistrados.Items != null)
+            @if (ClientesRegistrados != null && ClientesRegistrados.Items != null)
             {
-            @foreach (var cliente in ClientesRegistrados.Items)
-            {
-                <option value="@cliente.Id">@($"{cliente.Nombre} {cliente.Cedula}")</option>
+                @foreach (var cliente in ClientesRegistrados.Items)
+                {
+                    <option value="@cliente.Id">@($"{cliente.Nombre} {cliente.Cedula}")</option>
+                }
             }
-            }
-
         </select>
     </div>
-<br>
+
     <div class="form-group">
-        <label for="duracion">Duración de la renta ("Dias"):</label>
-        <input type="number" id="duracion" @bind="res.Dias"  readonly/>
+        <label style="color: blue;" for="duracion">Duración de la renta (días):</label>
+        <input type="number" id="duracion" class="form-control" @bind="res.Dias" readonly />
     </div>
-<br>
+
     <div class="form-group">
-        <label for="pagado">Precio renta ("Dias")</label>
-        <input type="number" id="pagado" @bind="res.precioRenta" />
+        <label style="color: blue;" for="pagado">Precio renta (días)</label>
+        <input type="number" id="pagado" class="form-control" @bind="res.precioRenta" />
     </div>
-<br>
-<br>
+
     <div class="form-group">
-        <label for="preciototal">Precio total a pagar:</label>
-        <input type="number" id="presiototal" value="@TotalRentalPrice" readonly />
+        <label style="color: blue;" for="preciototal">Precio total a pagar:</label>
+        <input type="number" id="presiototal" class="form-control" value="@TotalRentalPrice" readonly />
     </div>
-<br>
 
-<div class="form-group">
-    <label for="">Forma de pago</label>
-        <select @bind="res.Pago">
-        <option value="0">Seleccione forma de pago</option>
-        @foreach (var pagos in Pagos)
-        {
-            <option value="@pagos.Id">@pagos.Pago</option>
-        }
-    </select>
-</div>
+    <div class="form-group">
+        <label style="color: blue;" for="">Forma de pago</label>
+        <select class="form-control" @bind="res.Pago">
+            <option value="0">Seleccione forma de pago</option>
+            @foreach (var pagos in Pagos)
+            {
+                <option value="@pagos.Id">@pagos.Pago</option>
+            }
+        </select>
+    </div>
 
-
-<br>
-  
-
-    <button type="submit" class="btn btn-success" @onclick="Send">Ok</button>
+    <button type="submit" class="btn btn-success">Ok</button>
 </EditForm>
+
+
 
 @code
 {
