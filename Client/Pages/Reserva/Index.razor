@@ -7,17 +7,15 @@
 @* @using Blazorise.Bootstrap *@
 @using Blazorise.Icons.FontAwesome
 
-
-
-
 <h1 class="btn-registro">Reservas de vehiculos</h1>
 <br>
 <button class="btn btn-outline-primary btn-agregar" @onclick="Agregar">Agregar</button>
 
 <br>
 <br>
+<button class="btn btn-primary" @onclick="MostrarInforme">Mostrar Informe</button>
 
-<button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button>
+@* <button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button> *@
 
 <br>
 
@@ -82,8 +80,7 @@ else
     </div>
 }
 
-
-<Modal @ref="modalRef" IsOpen="@mostrarModal">
+<Modal @ref="facturaModalRef" IsOpen="@facturaVisible">
     <ModalContent Class="modal-content my-custom-modal">
         <ModalHeader Class="my-custom-modal-header">
             <h5 style="color: blue;" class="modal-title">Aridio Renta Car</h5>
@@ -98,8 +95,8 @@ else
                 <p><strong>Cliente: </strong> @factura.Cliente.Nombre</p>
                 <p><strong>Cedula: </strong> @factura.Cliente.Cedula</p>
                 <p><strong>Teléfono: </strong> @factura.Cliente.Telefono</p>
-                <p><strong>Vehiculo: </strong> @factura.Vehiculo.Marca @factura.Vehiculo.Modelo @factura.Vehiculo.Año</p>
-                <p><strong>Vehiculo Estado: </strong> @factura.Vehiculo.Mensaje</p>
+                <p><strong>Vehículo: </strong> @factura.Vehiculo.Marca @factura.Vehiculo.Modelo @factura.Vehiculo.Año</p>
+                <p><strong>Vehículo Estado: </strong> @factura.Vehiculo.Mensaje</p>
                 <p><strong>Fecha Inicio: </strong> @factura.FechaInicio</p>
                 <p><strong>Fecha Final: </strong> @factura.FechaFin</p>
                 <p><strong>Dias: </strong> @factura.Dias</p>
@@ -108,45 +105,53 @@ else
                 <p><strong>Forma de pago: </strong> @factura.NombrePago</p>
                 <br>
 
-<p>CONTRATO DE ALQUILER DE VEHÍCULO
+                <p><strong>CONTRATO DE ALQUILER DE VEHÍCULO </strong></p>
 
-Entre el Propietario del Vehículo y el Arrendatario, se acuerda el alquiler del siguiente vehículo:
+                <p>Entre el Propietario del Vehículo y el Arrendatario, se acuerda el alquiler del siguiente vehículo:
 
-Marca: [@factura.Vehiculo.Marca]
-Modelo: [@factura.Vehiculo.Modelo]
-Año: [@factura.Vehiculo.Año]
-Matrícula: [@factura.Vehiculo.NumeroPlaca]
-Plazo de alquiler: [@factura.FechaInicio] a [@factura.FechaFin].
+                Marca: [@factura.Vehiculo.Marca]
+                Modelo: [@factura.Vehiculo.Modelo]
+                Año: [@factura.Vehiculo.Año]
+                Matrícula: [@factura.Vehiculo.NumeroPlaca]
+                Plazo de alquiler: [@factura.FechaInicio] a [@factura.FechaFin].
 
-Tarifa de alquiler: [$RD].
-
-Responsabilidades:
-Uso legal del vehículo.
-Mantenimiento y cuidado adecuado.
-Seguro de automóvil válido.
-
-Terminación anticipada: [@factura.Dias] días de notificación por escrito.
-
-Ley aplicable y jurisdicción: [Republica Dominicana], [Jima Abajo, La Vega].</p>
-
-<p><strong>Firmas:</strong></p>
-<p>Propietario del Vehículo: ________________________</p>
-<p>Arrendatario: ________________________</p>
-
-
-<div><button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button></div>
+                Tarifa de alquiler: [$RD].
+                Uso legal del vehículo.
+                Mantenimiento y cuidado adecuado.
+                Seguro de automóvil válido.</p>
                 
-                
+                <p>Terminación anticipada: [@factura.Dias] días de notificación por escrito.</p>
+                <p>Ley aplicable y jurisdicción: [Republica Dominicana], [Jima Abajo, La Vega].</p>
+
+                <p><strong>Firmas:</strong></p>
+                <p>Propietario del Vehículo: ________________________</p>
+                <p>Arrendatario: ________________________</p>
+
+                <div><button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button></div>
             }
         </ModalBody>
     </ModalContent>
 </Modal>
 
-
-
-
-
-
+<Modal @ref="informeModalRef" IsOpen="@informeVisible">
+    <ModalContent Class="modal-content my-custom-modal">
+        <ModalHeader Class="my-custom-modal-header">
+            <h5 style="color: blue;" class="modal-title">Aridio Renta Car</h5>
+        </ModalHeader>
+        <ModalBody Class="my-custom-modal-body">
+            <!-- Contenido del modal -->
+            @if (informeVisible)
+            {
+                <h2><strong>Informe de reservas:</strong></h2>
+                <p><strong>Cantidad de Reservas:</strong> @cantidadReservas</p>
+                <p><strong>Cantidad de clientes: </strong> @cantidadClientes</p>
+                <p><strong>Cantidad de vehículos: </strong> @cantidadVehiculos</p>
+                <br>
+                <div><button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button></div>
+            }
+        </ModalBody>
+    </ModalContent>
+</Modal>
 
 @code
 {
@@ -155,8 +160,14 @@ Ley aplicable y jurisdicción: [Republica Dominicana], [Jima Abajo, La Vega].</p
     int reservaIdAEliminar = 0;
     private bool facturaVisible = false;
     private ReservaRecord factura;
-    private Modal modalRef;
+    
+    private Modal facturaModalRef; // referencia del Modal de Factura
+    private Modal informeModalRef; // referencia del Modal de Informe
     private bool mostrarModal;
+    private bool informeVisible = false;
+    private int cantidadReservas = 0;
+    private int cantidadVehiculos = 0;
+    private int cantidadClientes = 0;
 
     protected override async Task OnInitializedAsync()
     {
@@ -207,6 +218,9 @@ Ley aplicable y jurisdicción: [Republica Dominicana], [Jima Abajo, La Vega].</p
         if (resultado.Succeeded)
         {
             reservas = resultado.Items.ToList();
+            cantidadReservas = reservas.Count;
+            cantidadVehiculos = reservas.Select(r => r.Vehiculo).Distinct().Count();
+            cantidadClientes = reservas.Select(r => r.Cliente).Distinct().Count();
         }
         else
         {
@@ -223,27 +237,31 @@ Ley aplicable y jurisdicción: [Republica Dominicana], [Jima Abajo, La Vega].</p
     {
         factura = reserva;
         facturaVisible = true;
-        modalRef.Show();
+         facturaModalRef.Show();
     }
 
-
-
-        private async Task CerrarFactura()
+    private async Task CerrarFactura()
     {
         await JSRuntime.InvokeVoidAsync("CerrarModalFacturaAsync");
     }
 
-    private void AlternarModal()
+@* private void AlternarModal()
     {
         mostrarModal = !mostrarModal;
         if (mostrarModal)
         {
-            modalRef.Show();
+            facturaVisible = true;
+            facturaModalRef.Show();
         }
         else
         {
-            modalRef.Hide();
+            facturaModalRef.Hide();
         }
-    }
+    } *@
 
+    private void MostrarInforme()
+    {
+        informeVisible = true;
+        informeModalRef.Show();
+    }
 }

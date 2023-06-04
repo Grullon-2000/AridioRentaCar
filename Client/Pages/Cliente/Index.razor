@@ -2,6 +2,11 @@
 @inject IClienteManager ClienteManager
 @inject NavigationManager urlHelper
 @inject IJSRuntime JSRuntime
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@using Microsoft.JSInterop
+@using System.Net.Http
+@using System.Threading.Tasks
+
 
 <h1 class="btn-registro" style="color: darkblue;">Registro de clientes</h1>
 <br>
@@ -11,6 +16,8 @@
 <br>
 
 <button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button>
+
+
 
 <br>
 
@@ -166,4 +173,11 @@ else
     {
         await JSRuntime.InvokeVoidAsync("print");
     }
+
+
+
+
+
+
+
 }
