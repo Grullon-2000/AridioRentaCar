@@ -1,5 +1,9 @@
 ﻿@page "/Index"
 
+@using Blazorise
+@using Blazorise.Components
+@using Blazorise.Extensions
+
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components.Authorization;
 @attribute [Authorize(Roles="Administrador, Empleado")]
@@ -15,11 +19,24 @@
 
 <h1 style="color: darkorange;">Aridio Renta Car</h1>
 
-
-
-
-
-
-
 <div style="color:blueviolet">Beta 1.0</div>
+
+
+
+
+
+<section class="glide">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/06-07_Honda_Civic_Coupe.jpg" alt="" onclick="redireccionar('/reservas')">
+    <img src="http://cmotorcr.com/images/listings/enlarge/56566561685404817.jpg" alt="" onclick="redireccionar('/reservas')">
+    <img src="http://cmotorcr.com/images/listings/enlarge/13053611537572249.jpg" alt="" onclick="redireccionar('/reservas')">
+    <img src="http://cmotorcr.com/images/listings/enlarge/17139791535835423.jpg" alt="" onclick="redireccionar('/reservas')">
+    <img src="http://cmotorcr.com/images/listings/enlarge/793511505952450.jpg" alt="" onclick="redireccionar('/reservas')">
+</section>
+
+
+
+
+
+
+
 

@@ -18,6 +18,7 @@
     
     <link href="_content/Blazorise/blazorise.css" rel="stylesheet" />
     <link href="_content/Blazorise.Bootstrap5/blazorise.bootstrap5.css" rel="stylesheet" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
     <!-- <link href="BlazoriseSampleApplication.styles.css" rel="stylesheet" /> -->
 </head>
 
@@ -63,6 +64,28 @@
       <!-- <script src="_framework/blazor.webassembly.js"></script>  -->
       <script src="js/jspdf.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/glide.min.js"></script>
+      <script>
+        function redireccionar(url)
+        {
+            window.location.href = url;
+        }
+      </script>
+<script>
+    function mostrarInformacion(element) {
+        var info = element.querySelector('.info');
+        info.style.display = 'block';
+    }
+
+    function ocultarInformacion() {
+        var info = document.querySelectorAll('.info');
+        info.forEach(function(element) {
+            element.style.display = 'none';
+        });
+    }
+</script>
+
+
 
 
     
