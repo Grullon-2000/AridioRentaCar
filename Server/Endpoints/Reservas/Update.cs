@@ -43,6 +43,8 @@ namespace Aridio_Rent_A_Car.Server.Endpoints.Reservas
                 reserva.precioRenta = request.precioRenta;
                 reserva.Pago = request.Pago;
                 reserva.NombrePago = request.NombrePago;
+                reserva.Fecha = request.Fecha;
+                reserva.Finalizada = request.Finalizada;
                 // Actualiza otros campos según sea necesario
                 
 

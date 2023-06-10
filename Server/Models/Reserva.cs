@@ -19,6 +19,9 @@ public class Reserva
     public decimal precioRenta { get; set; }
     public string Pago {get; set;} = null!;
     public string NombrePago {get; set;} = null!;
+    public DateTime Fecha {get; set;}
+    public bool Finalizada { get; set; }
+
 
     public static Reserva Crear(ReservaCreateRequest request)
     {
@@ -32,6 +35,8 @@ public class Reserva
             precioRenta= request.precioRenta,
             Pago = request.Pago,
             NombrePago = request.NombrePago,
+            Fecha = request.Fecha,
+            Finalizada = request.Finalizada,
         };
     }
 
@@ -55,10 +60,14 @@ public class Reserva
             Pago = request.Pago;
         if(NombrePago != request.NombrePago)
             NombrePago = request.NombrePago;
+        if(Fecha != request.Fecha)
+            Fecha = request.Fecha;
+        if(Finalizada != request.Finalizada)
+            Finalizada = request.Finalizada;
     }
 
     public ReservaRecord ToRecord()
     {
-        return new ReservaRecord(Id, FechaInicio, FechaFin, VehiculoId, Vehiculo.ToRecord(), ClienteId, Cliente.ToRecord(), Dias, PrecioTotal, precioRenta, Pago, NombrePago);
+        return new ReservaRecord(Id, FechaInicio, FechaFin, VehiculoId, Vehiculo.ToRecord(), ClienteId, Cliente.ToRecord(), Dias, PrecioTotal, precioRenta, Pago, NombrePago, Fecha, Finalizada);
     }
 }

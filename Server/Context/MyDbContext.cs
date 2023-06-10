@@ -38,5 +38,6 @@ public class MyDbContext : DbContext, IMyDbContext
     public DbSet<Usuario> Usuarios { get; set; } = null!;
     public DbSet<UsuarioRol> UsuariosRoles { get; set; } = null!;
     public DbSet<Vehiculo> Vehiculos { get; set; } = null!;
+   
     #endregion
 }

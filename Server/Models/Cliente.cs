@@ -17,6 +17,7 @@ public class Cliente
     public string Pasaporte { get; set; } = null!;
     public string Licencia { get; set; } = null!;
     public DateTime FechaExpiracionLicencia { get; set; }
+    public string Sexo { get; set; } = null!; 
 
     public static Cliente Crear(ClienteCreateRequest request)
     {
@@ -29,7 +30,8 @@ public class Cliente
             Ocupacion = request.Ocupacion,
             Pasaporte = request.Pasaporte,
             Licencia = request.Licencia,
-            FechaExpiracionLicencia = request.FechaExpiracionLicencia
+            FechaExpiracionLicencia = request.FechaExpiracionLicencia,
+            Sexo = request.Sexo
         };
     }
 
@@ -53,10 +55,12 @@ public class Cliente
            Licencia = request.Licencia;
         if(FechaExpiracionLicencia != request.FechaExpiracionLicencia)
            FechaExpiracionLicencia = request.FechaExpiracionLicencia;
+         if(Sexo != request.Sexo)
+               Sexo = request.Sexo;
     }
 
     public ClienteRecord ToRecord()
     {
-      return new ClienteRecord(Id, Nombre, Direccion, Telefono, Nacionalidad, Cedula, Ocupacion, Pasaporte, Licencia, FechaExpiracionLicencia);
+      return new ClienteRecord(Id, Nombre, Direccion, Telefono, Nacionalidad, Cedula, Ocupacion, Pasaporte, Licencia, FechaExpiracionLicencia, Sexo);
     }
 }

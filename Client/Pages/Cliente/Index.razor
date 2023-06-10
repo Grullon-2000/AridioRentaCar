@@ -6,6 +6,7 @@
 @using Microsoft.JSInterop
 @using System.Net.Http
 @using System.Threading.Tasks
+@using Blazorise
 
 
 <h1 class="btn-registro" style="color: darkblue;">Registro de clientes</h1>
@@ -17,6 +18,7 @@
 
 <button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button>
 
+<button class="btn btn-primary btn-imprimir" @onclick="MostrarInforme">Mostrar Informe</button>
 
 
 <br>
@@ -29,6 +31,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nombre</th>
+                <th scope="col">Sexo</th>
                 <th scope="col">Dirección</th>
                 <th scope="col">Teléfono</th>
                 <th scope="col">Nacionalidad</th>
@@ -47,6 +50,7 @@
                 <tr>
                     <td scope="row">@clien.Id</td>
                     <td scope="row">@clien.Nombre</td>
+                    <td scope="row">@clien.Sexo</td>
                     <td scope="row">@clien.Direccion</td>
                     <td scope="row">@clien.Telefono</td>
                     <td scope="row">@clien.Nacionalidad</td>
@@ -87,6 +91,24 @@ else
 }
 
 
+
+
+<Modal @ref="informeModalRef" IsOpen="@informeVisible">
+    <ModalContent Class="modal-content my-custom-modal">
+        <ModalHeader Class="my-custom-modal-header">
+            <h5 style="color: blue;" class="modal-title">Aridio Renta Car</h5>
+        </ModalHeader>
+        <ModalBody Class="my-custom-modal-body">
+            <h3>Informe de clientes</h3>
+            <p>Total de clientes: @cantidadClientes</p>
+            <p>Total de clientes masculinos: @cantidadClientesMasculinos</p>
+            <p>Total de clientes femeninos: @cantidadClientesFemeninos</p>
+        </ModalBody>
+    </ModalContent>
+</Modal>
+
+
+
 @code
 {
     public List<ClienteRecord>? clientes { get; set; }
@@ -95,10 +117,17 @@ else
     public string filtroNombre { get; set; }
     string nombreBusqueda = string.Empty;
     List<ClienteRecord>? resultadosBusqueda;
+    
+    private Modal informeModalRef;
+    private bool informeVisible = false;
+    private int cantidadClientes = 0;
+    private int cantidadClientesMasculinos = 0;
+    private int cantidadClientesFemeninos = 0;
 
     protected override async Task OnInitializedAsync()
     {
         await CargarClientes();
+        CalcularCantidadClientes();
     }
 
     public void Agregar()
@@ -162,6 +191,13 @@ else
         }
     }
 
+    private void CalcularCantidadClientes()
+    {
+        cantidadClientes = clientes?.Count ?? 0;
+        cantidadClientesMasculinos = clientes?.Count(c => c.Sexo == "Masculino") ?? 0;
+        cantidadClientesFemeninos = clientes?.Count(c => c.Sexo == "Femenino") ?? 0;
+    }
+
     private void MostrarMensajeError(string mensaje)
     {
         // Aquí puedes implementar la lógica para mostrar el mensaje de error al usuario
@@ -174,10 +210,10 @@ else
         await JSRuntime.InvokeVoidAsync("print");
     }
 
-
-
-
-
-
+    private void MostrarInforme()
+    {
+        informeVisible = true;
+        informeModalRef.Show();
+    }
 
 }

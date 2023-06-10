@@ -25,7 +25,8 @@ namespace Aridio_Rent_A_Car.Server.Migrations
                     Ocupacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Pasaporte = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Licencia = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaExpiracionLicencia = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    FechaExpiracionLicencia = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Sexo = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -105,7 +106,9 @@ namespace Aridio_Rent_A_Car.Server.Migrations
                     PrecioTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     precioRenta = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Pago = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NombrePago = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    NombrePago = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Finalizada = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -40,4 +40,6 @@ public class ClienteCreateRequest
         Required(ErrorMessage = "Ingrese una fecha valida")
     ]
     public DateTime FechaExpiracionLicencia { get; set; }
+
+    public string Sexo { get; set; } = null!; 
 }

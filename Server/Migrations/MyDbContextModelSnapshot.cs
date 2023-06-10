@@ -61,6 +61,10 @@ namespace Aridio_Rent_A_Car.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Sexo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Telefono")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -84,11 +88,17 @@ namespace Aridio_Rent_A_Car.Server.Migrations
                     b.Property<int>("Dias")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("FechaFin")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaInicio")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("Finalizada")
+                        .HasColumnType("bit");
 
                     b.Property<string>("NombrePago")
                         .IsRequired()

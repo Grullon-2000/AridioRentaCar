@@ -43,6 +43,7 @@ namespace Aridio_Rent_A_Car.Server.Endpoints.Clientes
                 cliente.Pasaporte = request.Pasaporte;
                 cliente.Licencia = request.Licencia;
                 cliente.FechaExpiracionLicencia = request.FechaExpiracionLicencia;
+                cliente.Sexo = request.Sexo;
                 // Actualiza otros campos según sea necesario
 
                 await dbContext.SaveChangesAsync(cancellationToken);

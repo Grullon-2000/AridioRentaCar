@@ -14,6 +14,19 @@
     </div>
 
     <div class="form-group">
+        <label style="color: blue;" for="">Sexo</label>
+        <select class="form-control" @bind="Clien.Sexo">
+            <option value="0">Seleccione sexo</option>
+            @foreach (var Sexos in Sexos)
+            {
+                <option value="@Sexos.Id">@Sexos.Sexo</option>
+            }
+        </select>
+    </div>
+
+
+
+    <div class="form-group">
         <label style="color: blue;" for="direccion">Dirección</label>
         <InputText id="direccion" class="form-control" @bind-Value="Clien.Direccion"></InputText>
     </div>
@@ -27,6 +40,8 @@
         <label style="color: blue;" for="nacionalidad">Nacionalidad</label>
         <InputText id="nacionalidad" class="form-control" @bind-Value="Clien.Nacionalidad"></InputText>
     </div>
+
+
 
     <div class="form-group">
         <label style="color: blue;" for="cedula">Cédula</label>
@@ -67,6 +82,12 @@
 
     public ClienteUpdateRequest Clien {get; set;} = new ClienteUpdateRequest();
 
+    private List<ClienteRecord> Sexos { get; set; } = new List<ClienteRecord>()
+    {
+        new ClienteRecord {Id = 1, Sexo = "Masculino" },
+        new ClienteRecord {Id = 2, Sexo = "Femenino" },
+    };
+
 protected override async Task OnInitializedAsync()
 {
     if(Id!=0){
@@ -82,6 +103,7 @@ protected override async Task OnInitializedAsync()
             Clien.Pasaporte = resultado.Data.Pasaporte;
             Clien.Licencia = resultado.Data.Licencia;
             Clien.FechaExpiracionLicencia = resultado.Data.FechaExpiracionLicencia;
+            Clien.Sexo = resultado.Data.Sexo;
             StateHasChanged();
         }
     }
@@ -99,11 +121,36 @@ protected override async Task OnInitializedAsync()
     }
 
 
+        private void VerificarFormaDeSexoSeleccionada()
+    {
+        var sexoSeleccionado = Sexos.FirstOrDefault(p => p.Id.ToString() == Clien.Sexo);
+        if (sexoSeleccionado != null)
+        {
+            Clien.Sexo = sexoSeleccionado.Sexo;
+            Console.WriteLine("Forma de pago seleccionada: " + sexoSeleccionado.Sexo);
+        }
+        else
+        {
+            Console.WriteLine("No se ha seleccionado una forma de pago válida.");
+        }
+    }
+
+
 public async void Send()
 {
+    VerificarFormaDeSexoSeleccionada();
     var resultado = await ClienteManager.CreateAsync(Clien);
 
     if(resultado.Succeeded) urlHelper.NavigateTo("/clientes");
 }
+
+public List<string> ListaPaises { get; set; } = new List<string>
+{
+    "República Dominicana",
+    "Estados Unidos",
+    "México",
+    "España",
+    // Agrega más países según sea necesario
+};
 
 }
