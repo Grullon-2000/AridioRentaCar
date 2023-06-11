@@ -34,6 +34,22 @@ namespace Aridio_Rent_A_Car.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Usuarios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Correo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Clave = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rol = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UsuariosRoles",
                 columns: table => new
                 {
@@ -68,28 +84,6 @@ namespace Aridio_Rent_A_Car.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Vehiculos", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Usuarios",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RolId = table.Column<int>(type: "int", nullable: false),
-                    RolesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Usuarios", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Usuarios_UsuariosRoles_RolesId",
-                        column: x => x.RolesId,
-                        principalTable: "UsuariosRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -136,11 +130,6 @@ namespace Aridio_Rent_A_Car.Server.Migrations
                 name: "IX_Reservas_VehiculoId",
                 table: "Reservas",
                 column: "VehiculoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Usuarios_RolesId",
-                table: "Usuarios",
-                column: "RolesId");
         }
 
         /// <inheritdoc />
@@ -153,13 +142,13 @@ namespace Aridio_Rent_A_Car.Server.Migrations
                 name: "Usuarios");
 
             migrationBuilder.DropTable(
+                name: "UsuariosRoles");
+
+            migrationBuilder.DropTable(
                 name: "Clientes");
 
             migrationBuilder.DropTable(
                 name: "Vehiculos");
-
-            migrationBuilder.DropTable(
-                name: "UsuariosRoles");
         }
     }
 }

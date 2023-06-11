@@ -15,7 +15,8 @@ public class UsuarioCreateRequest
         Required(ErrorMessage = "Ingrese una contraseña valida"),
         MinLength(6, ErrorMessage = "La contraseña debe poseer minimo 6 caracteres")
     ]
-    public string Password { get; set; } = null!;
-    [Required(ErrorMessage = "Ingrese un valor valido")]
-    public int RolId { get; set; }
+ 
+    public string Correo { get; set; } = null!;
+    public string Clave { get; set; } = null!;
+    public string Rol { get; set; } = null!;
 }

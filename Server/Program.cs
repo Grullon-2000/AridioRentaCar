@@ -10,6 +10,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MyDbContext>();
 builder.Services.AddScoped<IMyDbContext,MyDbContext>();
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -7,18 +7,18 @@ public class UsuarioRecord
     {
     }
 
-    public UsuarioRecord(int id, string nombre, string password, int rolId, UsuarioRolRecord roles)
+    public UsuarioRecord(int id, string nombre, string correo, string clave, string rol)
     {
         Id = id;
         Nombre = nombre;
-        Password = password;
-        RolId = rolId;
-        Roles = roles;
+        Correo = correo;
+        Clave = clave;
+        Rol = rol;
     }
 
     public int Id { get; set; }
     public string Nombre { get; set; } = null!;
-    public string Password { get; set; } = null!;
-    public int RolId { get; set; }
-    public virtual UsuarioRolRecord Roles { get; set; } = null!;
+    public string Correo { get; set; } = null!;
+    public string Clave { get; set; } = null!;
+    public string Rol { get; set; } = null!;
 }

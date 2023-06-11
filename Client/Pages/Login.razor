@@ -31,6 +31,7 @@
 
         <div class="mb-3">
             <button @onclick="IniciarSesion" class="btn btn-primary">Login</button>
+            <button @onclick="IrARegistro" class="btn btn-secondary">Registrar</button>
         </div>
 
     </div>
@@ -52,6 +53,11 @@
 
             navManager.NavigateTo("/Index");
         }
+    }
+
+        private void IrARegistro()
+    {
+        navManager.NavigateTo("/registro");
     }
 
 }
