@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aridio_Rent_A_Car.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230611015952_InitialCreated")]
+    [Migration("20230611031604_InitialCreated")]
     partial class InitialCreated
     {
         /// <inheritdoc />
