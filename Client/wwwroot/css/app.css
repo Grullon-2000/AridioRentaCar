@@ -100,6 +100,9 @@ a, .btn-link {
         content: var(--blazor-load-percentage-text, "Loading");
     }
 
+
+
+/* Diseño de ocultar los datos en la impresion */
 @media print {
    /* Ocultar el encabezado */
    header {
@@ -126,6 +129,12 @@ a, .btn-link {
 .btn-registro {
     display: none;
 }
+
+
+
+
+
+
 
 
 table {
