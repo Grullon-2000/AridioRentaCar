@@ -32,11 +32,16 @@
         </div>
 
         <div class="mb-3">
+<<<<<<< HEAD
             <button @onclick="IniciarSesion" class="btn-primary">Iniciar Sesion</button>
         </div>
 
         <div class="mb-3">
             <button class="btn-second">Has Olvidado tu Contraseña?</button>
+=======
+            <button @onclick="IniciarSesion" class="btn btn-primary">Login</button>
+            <button @onclick="IrARegistro" class="btn btn-secondary">Registrar</button>
+>>>>>>> adf7d9914b6c470c3034897c17c669c5f170f72d
         </div>
 
     </div>
@@ -58,6 +63,11 @@
 
             navManager.NavigateTo("/Index");
         }
+    }
+
+        private void IrARegistro()
+    {
+        navManager.NavigateTo("/registro");
     }
 
 }

@@ -1,3 +1,4 @@
+
 @page "/reservas"
 @inject IReservaManager ReservaManager
 @inject NavigationManager urlHelper
@@ -13,7 +14,7 @@
 
 <br>
 <br>
-<button class="btn btn-primary" @onclick="MostrarInforme">Mostrar Informe</button>
+<button class="btn btn-primary btn-imprimir" @onclick="MostrarInforme">Mostrar Informe</button>
 
 @* <button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button> *@
 
@@ -65,6 +66,7 @@
             }
         </tbody>
     </table>
+
 }
 else
 {
@@ -133,6 +135,8 @@ else
     </ModalContent>
 </Modal>
 
+
+
 <Modal @ref="informeModalRef" IsOpen="@informeVisible">
     <ModalContent Class="modal-content my-custom-modal">
         <ModalHeader Class="my-custom-modal-header">
@@ -147,11 +151,31 @@ else
                 <p><strong>Cantidad de clientes: </strong> @cantidadClientes</p>
                 <p><strong>Cantidad de vehículos: </strong> @cantidadVehiculos</p>
                 <br>
+                <h3><strong>Reservas por Mes:</strong></h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mes</th>
+                            <th>Cantidad de Reservas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var kvp in reservasPorMes)
+                        {
+                            <tr>
+                                <td>@kvp.Key</td>
+                                <td>@kvp.Value</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <p><strong>Cantidad de dinero obtenido: </strong> @cantidadDineroObtenido</p>
                 <div><button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button></div>
             }
         </ModalBody>
     </ModalContent>
 </Modal>
+
 
 @code
 {
@@ -168,6 +192,9 @@ else
     private int cantidadReservas = 0;
     private int cantidadVehiculos = 0;
     private int cantidadClientes = 0;
+
+    private Dictionary<string, int> reservasPorMes;
+    private decimal cantidadDineroObtenido;
 
     protected override async Task OnInitializedAsync()
     {
@@ -214,13 +241,28 @@ else
 
     private async Task CargarReservas()
     {
+
         var resultado = await ReservaManager.GetAsync();
-        if (resultado.Succeeded)
+        if (resultado != null && resultado.Succeeded)
         {
             reservas = resultado.Items.ToList();
             cantidadReservas = reservas.Count;
             cantidadVehiculos = reservas.Select(r => r.Vehiculo).Distinct().Count();
             cantidadClientes = reservas.Select(r => r.Cliente).Distinct().Count();
+
+        // Calcular la cantidad de reservas por mes
+        reservasPorMes = new Dictionary<string, int>();
+        foreach (var reserva in reservas)
+        {
+            string mes = reserva.FechaInicio.ToString("MMMM");
+            if (reservasPorMes.ContainsKey(mes))
+                reservasPorMes[mes]++;
+            else
+                reservasPorMes[mes] = 1;
+        }
+
+        // Calcular la cantidad de dinero obtenido
+        cantidadDineroObtenido = reservas.Sum(r => r.PrecioTotal);
         }
         else
         {
@@ -264,4 +306,12 @@ else
         informeVisible = true;
         informeModalRef.Show();
     }
+
+
+
+
+
+
+
+
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aridio_Rent_A_Car.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230603201613_InitialCreated")]
+    [Migration("20230611031604_InitialCreated")]
     partial class InitialCreated
     {
         /// <inheritdoc />
@@ -64,6 +64,10 @@ namespace Aridio_Rent_A_Car.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Sexo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Telefono")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -87,11 +91,17 @@ namespace Aridio_Rent_A_Car.Server.Migrations
                     b.Property<int>("Dias")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("FechaFin")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaInicio")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("Finalizada")
+                        .HasColumnType("bit");
 
                     b.Property<string>("NombrePago")
                         .IsRequired()
@@ -127,23 +137,23 @@ namespace Aridio_Rent_A_Car.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Clave")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Correo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("Rol")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RolId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RolesId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RolesId");
 
                     b.ToTable("Usuarios");
                 });
@@ -236,17 +246,6 @@ namespace Aridio_Rent_A_Car.Server.Migrations
                     b.Navigation("Cliente");
 
                     b.Navigation("Vehiculo");
-                });
-
-            modelBuilder.Entity("Aridio_Rent_A_Car.Server.Models.Usuario", b =>
-                {
-                    b.HasOne("Aridio_Rent_A_Car.Server.Models.UsuarioRol", "Roles")
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

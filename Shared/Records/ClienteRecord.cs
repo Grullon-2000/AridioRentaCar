@@ -7,7 +7,7 @@ public class ClienteRecord
     {
     }
 
-    public ClienteRecord(int id, string nombre, string direccion, string telefono, string nacionalidad, string cedula, string ocupacion, string pasaporte, string licencia, DateTime fechaExpiracionLicencia)
+    public ClienteRecord(int id, string nombre, string direccion, string telefono, string nacionalidad, string cedula, string ocupacion, string pasaporte, string licencia, DateTime fechaExpiracionLicencia, string sexo)
     {
         Id = id;
         Nombre = nombre;
@@ -19,6 +19,7 @@ public class ClienteRecord
         Pasaporte = pasaporte;
         Licencia = licencia;
         FechaExpiracionLicencia = fechaExpiracionLicencia;
+        Sexo = sexo;
     }
 
     public int Id { get; set; }
@@ -31,4 +32,5 @@ public class ClienteRecord
     public string Pasaporte { get; set; } = null!;
     public string Licencia { get; set; } = null!;
     public DateTime FechaExpiracionLicencia { get; set; }
+    public string Sexo { get; set; } = null!; 
 }

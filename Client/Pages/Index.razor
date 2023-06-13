@@ -1,7 +1,12 @@
 ﻿@page "/Index"
 
+@using Blazorise
+@using Blazorise.Components
+@using Blazorise.Extensions
+
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components.Authorization;
+<<<<<<< HEAD
 @attribute [Authorize(Roles="Administrador, Empleado")]
 
 <HeadContent>
@@ -18,6 +23,12 @@
 <PageTitle >Aridio Renta Car</PageTitle>
 
 <h2>Aridio Renta Car</h2>
+=======
+@attribute [Authorize(Roles="Administrador, Empleado, Cliente")]
+
+<PageTitle >Aridio Renta Car</PageTitle>
+
+>>>>>>> adf7d9914b6c470c3034897c17c669c5f170f72d
 
 
 
@@ -25,5 +36,116 @@
 
 
 
+<<<<<<< HEAD
 <div>Beta 1.0</div>
+=======
+
+
+<!--Hey! This is the original version
+of Simple CSS Waves-->
+<div><section class="glide">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/06-07_Honda_Civic_Coupe.jpg" alt="" onclick="redireccionar('/reservas')">
+    <img src="http://cmotorcr.com/images/listings/enlarge/56566561685404817.jpg" alt="" onclick="redireccionar('/reservas')">
+    <img src="http://cmotorcr.com/images/listings/enlarge/13053611537572249.jpg" alt="" onclick="redireccionar('/reservas')">
+    <img src="http://cmotorcr.com/images/listings/enlarge/17139791535835423.jpg" alt="" onclick="redireccionar('/reservas')">
+    <img src="http://cmotorcr.com/images/listings/enlarge/793511505952450.jpg" alt="" onclick="redireccionar('/reservas')">
+</section></div>
+
+
+<div class="header">
+
+<!--Content before waves-->
+<div class="inner-header flex">
+<!--Just the logo.. Don't mind this-->
+<svg version="1.1" class="logo" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 500" xml:space="preserve">
+<path fill="#FFFFFF" stroke="#000000" stroke-width="10" stroke-miterlimit="10" d="M57,283" />
+<g><path fill="#fff"
+d="M250.4,0.8C112.7,0.8,1,112.4,1,250.2c0,137.7,111.7,249.4,249.4,249.4c137.7,0,249.4-111.7,249.4-249.4
+C499.8,112.4,388.1,0.8,250.4,0.8z M383.8,326.3c-62,0-101.4-14.1-117.6-46.3c-17.1-34.1-2.3-75.4,13.2-104.1
+c-22.4,3-38.4,9.2-47.8,18.3c-11.2,10.9-13.6,26.7-16.3,45c-3.1,20.8-6.6,44.4-25.3,62.4c-19.8,19.1-51.6,26.9-100.2,24.6l1.8-39.7      c35.9,1.6,59.7-2.9,70.8-13.6c8.9-8.6,11.1-22.9,13.5-39.6c6.3-42,14.8-99.4,141.4-99.4h41L333,166c-12.6,16-45.4,68.2-31.2,96.2    c9.2,18.3,41.5,25.6,91.2,24.2l1.1,39.8C390.5,326.2,387.1,326.3,383.8,326.3z" />
+</g>
+</svg>
+<h1 style="color: Gold;">Aridio Renta Car</h1>
+</div>
+
+<!--Waves Container-->
+<div>
+<svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+<defs>
+<path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+</defs>
+<g class="parallax">
+<use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+<use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+<use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+<use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+</g>
+</svg>
+</div>
+<!--Waves end-->
+
+</div>
+<!--Header ends-->
+
+<!--Content starts-->
+<div class="content flex">
+  <p>By.TechMasters </p>
+</div>
+<!--Content ends-->
+
+
+
+<br>
+<div class="blog-container">
+    <h1>¡Bienvenidos al blog de Aridio Renta Car!</h1>
+
+    <p>En este espacio, encontrarás toda la información que necesitas sobre nuestra empresa de alquiler de vehículos ubicada en Jima Abajo. Somos una pequeña empresa que está emergiendo en el mercado, pero estamos comprometidos en brindarte un servicio de calidad y satisfacer todas tus necesidades de transporte.</p>
+
+    <p>Nuestro objetivo principal es proporcionarte una experiencia de alquiler de autos sin complicaciones y asequible. Aquí, te presentaremos los servicios que ofrecemos, nuestros vehículos disponibles y algunos consejos útiles para que aproveches al máximo tu experiencia de alquiler con nosotros.</p>
+
+    <h2>Servicios de Aridio Renta Car:</h2>
+
+    <h3>Alquiler de autos</h3>
+    <p>Ofrecemos una amplia gama de vehículos para satisfacer tus necesidades de transporte, ya sea que estés buscando un automóvil compacto para moverte por la ciudad o una camioneta espaciosa para un viaje en familia. Todos nuestros autos están en excelentes condiciones y se someten regularmente a mantenimiento para garantizar tu seguridad y comodidad.</p>
+
+    <h3>Entrega y recogida</h3>
+    <p>Entendemos que tu tiempo es valioso, por lo que ofrecemos servicios de entrega y recogida en Jima Abajo y sus alrededores. Puedes elegir el lugar y la hora que más te convenga, ya sea en el aeropuerto, tu hotel o cualquier otra ubicación conveniente.</p>
+
+    <h3>Seguro</h3>
+    <p>La seguridad de nuestros clientes es nuestra máxima prioridad. Todos nuestros vehículos están asegurados, lo que te brinda tranquilidad durante tu viaje. Además, ofrecemos opciones adicionales de seguro para que elijas la cobertura que mejor se adapte a tus necesidades.</p>
+
+    <h2>Vehículos disponibles</h2>
+    <p>En Aridio Renta Car, contamos con una flota diversa de vehículos que se adaptan a diferentes preferencias y presupuestos. Algunos de los vehículos que ofrecemos incluyen:</p>
+
+    <ul>
+        <li>Automóviles compactos: perfectos para moverte por la ciudad y ahorrar en combustible.</li>
+        <li>Sedanes y SUV medianos: ideales para viajes en carretera o familias pequeñas.</li>
+        <li>Camionetas y minivans: espaciosas y versátiles, ideales para grupos grandes o vacaciones familiares.</li>
+    </ul>
+
+    <h2>Consejos para un alquiler de autos exitoso</h2>
+
+    <p><strong>Reserva con anticipación:</strong> Para garantizar la disponibilidad del vehículo que deseas, te recomendamos hacer tu reserva con anticipación. Puedes comunicarte con nuestro equipo de atención al cliente o utilizar nuestra plataforma en línea para realizar tu reserva de manera rápida y sencilla.</p>
+
+    <p><strong>Comprueba las políticas de alquiler:</strong> Antes de alquilar un vehículo, asegúrate de leer y comprender las políticas de alquiler de Aridio Renta Car. Esto incluye los requisitos de edad, el depósito de seguridad, las restricciones de kilometraje y cualquier otra información relevante.</p>
+
+    <p><strong>Inspecciona el vehículo antes de partir:</strong> Antes de iniciar tu viaje, te recomendamos que realices una inspección exhaustiva del vehículo. Verifica cualquier daño existente y asegúrate de informarlo a nuestro personal para evitar cualquier confusión o cargo adicional al momento de la devolución.</p>
+
+    <p>Estamos emocionados de comenzar este viaje contigo y esperamos brindarte un excelente servicio de alquiler de autos en Jima Abajo. En nuestro próximo artículo, te proporcionaremos más detalles sobre las atracciones turísticas locales y los destinos populares que puedes visitar en la zona.</p>
+
+    <p><strong>¡Gracias por elegir Aridio Renta Car!</strong></p>
+</div>
+
+
+<div style="color:blueviolet">Beta 2.0</div>
+
+
+
+
+
+
+
+>>>>>>> adf7d9914b6c470c3034897c17c669c5f170f72d
 

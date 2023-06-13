@@ -8,17 +8,18 @@ public class Usuario
 {
     [Key]
     public int Id { get; set; }
-    public string Nombre { get; set; } = null!;
-    public string Password { get; set; } = null!;
-    public int RolId { get; set; }
-    public virtual UsuarioRol Roles { get; set; } = null!;
+    public string Nombre { get; set; } = null!;        
+    public string Correo { get; set; } = null!;
+    public string Clave { get; set; } = null!;
+    public string Rol { get; set; } = null!;
 
     public static Usuario Crear(UsuarioCreateRequest request)
     {
         return new Usuario(){
             Nombre = request.Nombre,
-            Password = request.Password,
-            RolId = request.RolId
+            Correo = request.Correo,
+            Clave = request.Clave,
+            Rol = request.Rol
         };
     }
 
@@ -26,14 +27,16 @@ public class Usuario
     {
         if(Nombre != request.Nombre)
             Nombre = request.Nombre;
-        if(Password != request.Password)
-            Password = request.Password;
-        if(RolId != request.RolId)
-            RolId = request.RolId;
+        if(Correo != request.Correo)
+            Correo = request.Correo;
+        if(Clave != request.Clave)
+            Clave = request.Clave;
+        if(Rol != request.Rol)
+            Rol = request.Rol;
     }
 
     public UsuarioRecord ToRecord()
     {
-        return new UsuarioRecord(Id, Nombre, Password, RolId, Roles.ToRecord());
+        return new UsuarioRecord(Id, Nombre, Correo, Clave, Rol);
     }
 }

@@ -7,7 +7,7 @@ public class ReservaRecord
     {
     }
 
-    public ReservaRecord(int id, DateTime fechaInicio, DateTime fechaFin, int vehiculoId, VehiculoRecord vehiculo, int clienteId, ClienteRecord cliente, int dias, decimal precioTotal, decimal preciorenta, string pago, string nombrePago)
+    public ReservaRecord(int id, DateTime fechaInicio, DateTime fechaFin, int vehiculoId, VehiculoRecord vehiculo, int clienteId, ClienteRecord cliente, int dias, decimal precioTotal, decimal preciorenta, string pago, string nombrePago, DateTime fecha, bool finalizada)
     {
         Id = id;
         FechaInicio = fechaInicio;
@@ -21,6 +21,8 @@ public class ReservaRecord
         precioRenta = preciorenta;
         Pago = pago;
         NombrePago = nombrePago;
+        Fecha = fecha;
+        Finalizada = finalizada;
     }
 
     public int Id { get; set; }
@@ -35,4 +37,6 @@ public class ReservaRecord
     public decimal precioRenta { get; set; }
     public string Pago {get;set;} = null!; 
     public string NombrePago {get; set;} = null!;
+    public DateTime Fecha {get; set;}
+    public bool Finalizada { get; set; }
 }

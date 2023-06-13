@@ -1,0 +1,58 @@
+@page "/registro"
+@inject IUsuarioManager UsuarioManager;
+@using Aridio_Rent_A_Car.Shared.Requests;
+@using Aridio_Rent_A_Car.Client.Managers;
+@using Aridio_Rent_A_Car.Shared.Wrapper;
+@using Aridio_Rent_A_Car.Shared;
+@using Aridio_Rent_A_Car.Shared.Records;
+
+<h3>Registro de Usuario</h3>
+
+<div class="row mt-5">
+    <div class="col-lg-4 offset-lg-4 border">
+        <div class="mb-3">
+            <label>Nombre</label>
+            <input @bind="registro.Nombre" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Correo</label>
+            <input @bind="registro.Correo" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Contraseña</label>
+            <input type="password" @bind="registro.Clave" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <button @onclick="RegistrarUsuario" class="btn btn-primary">Registrar</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private UsuarioRecord registro = new UsuarioRecord();
+
+    private async Task RegistrarUsuario()
+    {
+        var registroResult = await UsuarioManager.CreateAsync(new UsuarioCreateRequest
+        {
+            Nombre = registro.Nombre,   // Proporciona el nombre desde el formulario
+            Correo = registro.Correo,   // Proporciona el correo desde el formulario
+            Clave = registro.Clave,
+            Rol = "Cliente"
+        });
+
+        if (registroResult.Succeeded)
+        {
+            var userId = registroResult.Data;
+            var mensaje = registroResult.Message;
+            // Manejar la creación exitosa del usuario
+            // Mostrar una notificación de éxito, etc.
+        }
+        else
+        {
+            var errorMessage = registroResult.Message;
+            // Manejar el caso de error de registro
+            // Mostrar una notificación de error, etc.
+        }
+    }
+}
