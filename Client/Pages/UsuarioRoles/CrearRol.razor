@@ -1,6 +1,10 @@
 @page "/roles/crear"
 @page "/roles/eliminar/{Id:int}"
 
+<HeadContent>
+    <link rel="stylesheet" href="CrearRol.css" />
+</HeadContent>
+
 <EditForm Model="@Rol" OnInvalidSubmit="Send">
 <h1>@Titulo</h1>
 <DataAnnotationsValidator/>

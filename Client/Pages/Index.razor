@@ -4,6 +4,10 @@
 @using Microsoft.AspNetCore.Components.Authorization;
 @attribute [Authorize(Roles="Administrador, Empleado")]
 
+<HeadContent>
+    <link rel="stylesheet" href="Index.css" />
+</HeadContent>
+
 <AuthorizeView>
     <Authorized>
         <h1>Bienvenido @context.User.Identity!.Name</h1>
@@ -13,7 +17,7 @@
 
 <PageTitle >Aridio Renta Car</PageTitle>
 
-<h1 style="color: darkorange;">Aridio Renta Car</h1>
+<h2>Aridio Renta Car</h2>
 
 
 
@@ -21,5 +25,5 @@
 
 
 
-<div style="color:blueviolet">Beta 1.0</div>
+<div>Beta 1.0</div>
 

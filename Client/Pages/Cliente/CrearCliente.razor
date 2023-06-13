@@ -1,7 +1,9 @@
 @page "/clientes/crear"
 @page "/clientes/eliminar/{Id:int}"
 
-
+<HeadContent>
+    <link rel="stylesheet" href="CrearCliente.css" />
+</HeadContent>
 
 <EditForm Model="@Clien" OnInvalidSubmit="Send">
     <h1>@Titulo</h1>
@@ -9,47 +11,47 @@
     <ValidationSummary />
 
     <div class="form-group">
-        <label style="color: blue;" for="nombre-completo">Nombre Completo</label>
+        <label for="nombre-completo">Nombre Completo</label>
         <InputText id="nombre-completo" class="form-control" @bind-Value="Clien.Nombre"></InputText>
     </div>
 
     <div class="form-group">
-        <label style="color: blue;" for="direccion">Dirección</label>
+        <label  for="direccion">Dirección</label>
         <InputText id="direccion" class="form-control" @bind-Value="Clien.Direccion"></InputText>
     </div>
 
     <div class="form-group">
-        <label style="color: blue;" for="telefono">Teléfono</label>
+        <label  for="telefono">Teléfono</label>
         <InputText id="telefono" class="form-control" @bind-Value="Clien.Telefono"></InputText>
     </div>
 
     <div class="form-group">
-        <label style="color: blue;" for="nacionalidad">Nacionalidad</label>
+        <label  for="nacionalidad">Nacionalidad</label>
         <InputText id="nacionalidad" class="form-control" @bind-Value="Clien.Nacionalidad"></InputText>
     </div>
 
     <div class="form-group">
-        <label style="color: blue;" for="cedula">Cédula</label>
+        <label  for="cedula">Cédula</label>
         <InputText id="cedula" class="form-control" @bind-Value="Clien.Cedula"></InputText>
     </div>
 
     <div class="form-group">
-        <label style="color: blue;" for="ocupacion">Ocupación</label>
+        <label  for="ocupacion">Ocupación</label>
         <InputText id="ocupacion" class="form-control" @bind-Value="Clien.Ocupacion"></InputText>
     </div>
 
     <div class="form-group">
-        <label style="color: blue;" for="pasaporte">Pasaporte</label>
+        <label  for="pasaporte">Pasaporte</label>
         <InputText id="pasaporte" class="form-control" @bind-Value="Clien.Pasaporte"></InputText>
     </div>
 
     <div class="form-group">
-        <label style="color: blue;" for="licencia">Licencia</label>
+        <label  for="licencia">Licencia</label>
         <InputText id="licencia" class="form-control" @bind-Value="Clien.Licencia"></InputText>
     </div>
 
     <div class="form-group">
-        <label style="color: blue;" for="fecha-expiracion-licencia">Fecha de expiración licencia</label>
+        <label  for="fecha-expiracion-licencia">Fecha de expiración licencia</label>
         <input id="fecha-expiracion-licencia" type="text" class="form-control" @ref="dateInput" @bind="@Clien.FechaExpiracionLicencia" />
     </div>
 

@@ -1,23 +1,27 @@
 @page "/reservas/crear"
 @page "/reservas/eliminar/{Id:int}"
 
+<HeadContent>
+    <link rel="stylesheet" href="CrearReserva.css" />
+</HeadContent>
+
 <EditForm Model="@res" OnInvalidSubmit="Send">
     <h1>@Titulo</h1>
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="form-group">
-        <label style="color: blue;">Fecha de inicio</label>
+        <label >Fecha de inicio</label>
         <input type="date" class="form-control" @bind="res.FechaInicio" />
     </div>
 
     <div class="form-group">
-        <label style="color: blue;">Fecha culminación</label>
+        <label >Fecha culminación</label>
         <input type="date" class="form-control" @bind="res.FechaFin" />
     </div>
 
     <div class="form-group">
-        <label style="color: blue;">Vehículo</label>
+        <label >Vehículo</label>
         <select class="form-control" @bind="SelectedVehicleId">
             <option value="0">Seleccione vehículo</option>
             @if (VehiculosRegistrados != null && VehiculosRegistrados.Items != null)
@@ -31,7 +35,7 @@
     </div>
 
     <div class="form-group">
-        <label style="color: blue;">Cliente</label>
+        <label >Cliente</label>
         <select class="form-control" @bind="SelectedClientId">
             <option value="0">Seleccione cliente</option>
             @if (ClientesRegistrados != null && ClientesRegistrados.Items != null)
@@ -45,22 +49,22 @@
     </div>
 
     <div class="form-group">
-        <label style="color: blue;" for="duracion">Duración de la renta (días):</label>
+        <label  for="duracion">Duración de la renta (días):</label>
         <input type="number" id="duracion" class="form-control" @bind="res.Dias" readonly />
     </div>
 
     <div class="form-group">
-        <label style="color: blue;" for="pagado">Precio renta (días)</label>
+        <label for="pagado">Precio renta (días)</label>
         <input type="number" id="pagado" class="form-control" @bind="res.precioRenta" />
     </div>
 
     <div class="form-group">
-        <label style="color: blue;" for="preciototal">Precio total a pagar:</label>
+        <label for="preciototal">Precio total a pagar:</label>
         <input type="number" id="presiototal" class="form-control" value="@TotalRentalPrice" readonly />
     </div>
 
     <div class="form-group">
-        <label style="color: blue;" for="">Forma de pago</label>
+        <label  for="">Forma de pago</label>
         <select class="form-control" @bind="res.Pago">
             <option value="0">Seleccione forma de pago</option>
             @foreach (var pagos in Pagos)
@@ -70,7 +74,7 @@
         </select>
     </div>
 
-    <button type="submit" class="btn btn-success">Ok</button>
+    <button type="submit" class="btn btn-success" @onclick="Send">Ok</button>
 </EditForm>
 
 

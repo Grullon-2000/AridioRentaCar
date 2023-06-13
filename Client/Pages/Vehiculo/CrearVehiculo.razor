@@ -1,6 +1,9 @@
 @page "/vehiculo/crear"
 @page "/vehiculo/eliminar/{Id:int}"
 
+<HeadContent>
+    <link rel="stylesheet" href="EditarVehiculo.css" />
+</HeadContent>
 
 <EditForm Model="@Vehi" OnInvalidSubmit="Send">
     <h1>@Titulo</h1>
@@ -8,47 +11,47 @@
     <ValidationSummary />
 
     <div class="form-group">
-        <label style="color: blue;">Marca</label>
+        <label >Marca</label>
         <InputText class="form-control" @bind-Value="Vehi.Marca"></InputText>
     </div>
 
     <div class="form-group">
-        <label style="color: blue;">Modelo</label>
+        <label >Modelo</label>
         <InputText class="form-control" @bind-Value="Vehi.Modelo"></InputText>
     </div>
 
     <div class="form-group">
-        <label style="color: blue;">Año</label>
+        <label >Año</label>
         <input type="number" class="form-control" @bind="@Vehi.Año" />
     </div>
 
     <div class="form-group">
-        <label style="color: blue;">Color</label>
+        <label >Color</label>
         <InputText class="form-control" @bind-Value="Vehi.Color"></InputText>
     </div>
 
     <div class="form-group">
-        <label style="color: blue;">Numero de placa</label>
+        <label >Numero de placa</label>
         <InputText class="form-control" @bind-Value="Vehi.NumeroPlaca"></InputText>
     </div>
 
     <div class="form-group">
-        <label style="color: blue;">Precio por día</label>
+        <label >Precio por día</label>
         <input type="number" class="form-control" @bind="@Vehi.PrecioPorDia" />
     </div>
 
     <div class="form-group">
         <InputCheckbox id="ckbActivo" @bind-Value="Vehi.Activo" />
-        <label style="color: blue;" for="ckbActivo">Activo</label>
+        <label for="ckbActivo">Activo</label>
     </div>
 
     <div class="form-group">
         <InputCheckbox id="ckbInactivo" @bind-Value="Vehi.Inactivo" />
-        <label style="color: blue;" for="ckbInactivo">Inactivo</label>
+        <label  for="ckbInactivo">Inactivo</label>
     </div>
 
     <div class="form-group">
-        <label style="color: blue;">Estado de Vehículo</label>
+        <label >Estado de Vehículo</label>
         <br>
         <textarea cols="50" rows="4" class="form-control" @bind="Vehi.Mensaje"></textarea>
     </div>
