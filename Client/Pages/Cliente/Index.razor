@@ -20,6 +20,8 @@
 
 <br>
 
+@*Tabla de Clientes*@
+
 @if (clientes != null)
 {
     <br>
@@ -76,7 +78,7 @@ else
 
 
 
-
+@*Modelo que mustra en pantalla para poder eliminar a los clientes*@
 
 @if (confirmacionVisible)
 {
@@ -88,7 +90,7 @@ else
 }
 
 
-
+@*Modelo donde se refleja los informes de los clientes, por pantalla*@
 
 <Modal @ref="informeModalRef" IsOpen="@informeVisible">
     <ModalContent Class="modal-content my-custom-modal">
@@ -109,47 +111,59 @@ else
 
 @code
 {
+    // Variables y listas para cargar los clientes ya registrados en la base de datos y llamarlos para visualizar en la tabla.
     public List<ClienteRecord>? clientes { get; set; }
+    public string filtroNombre { get; set; }
+
+    // Variables para el menu que se muestra para eliminar los clientes 
     bool confirmacionVisible = false;
     int clienteIdAEliminar = 0;
-    public string filtroNombre { get; set; }
-    string nombreBusqueda = string.Empty;
-    List<ClienteRecord>? resultadosBusqueda;
     
+    // Variables para muestrar los informes, por pantalla.
     private Modal informeModalRef;
     private bool informeVisible = false;
+
+    
+    // variables para sacar la cantidad de clientes y por sus sexos en el informe.
     private int cantidadClientes = 0;
     private int cantidadClientesMasculinos = 0;
     private int cantidadClientesFemeninos = 0;
 
+
     protected override async Task OnInitializedAsync()
     {
+        // Carga los clientes y las cantidades de los mismos que estan en la base de datos, esto lo llama.
         await CargarClientes();
         CalcularCantidadClientes();
     }
 
+    // Modelo para Agregar los clientes, te redirecciona al formulario de crar a los clientes
     public void Agregar()
     {
         urlHelper.NavigateTo("/clientes/crear", false);
     }
 
+    // Modelo para Editar los clientes, te redirecciona al formulario de editar a los clientes
     public void Editar(int Id)
     {
         urlHelper.NavigateTo($"/clientes/editar/{Id}", false);
     }
 
+    // Modelo para la muestra la confirmacion de la de eliminar los clientes
     private async Task MostrarConfirmacionEliminar(int clienteId)
     {
         clienteIdAEliminar = clienteId;
         confirmacionVisible = true;
     }
 
+    // Modelo para la Cancelar la eliminacion de los clientes
     private void CancelarEliminarCliente()
     {
         confirmacionVisible = false;
         clienteIdAEliminar = 0;
     }
 
+    // Modelo para la confirmacion de la eliminacion de los clientes
     private async Task ConfirmarEliminarCliente()
     {
         var resultado = await ClienteManager.DeleteAsync(clienteIdAEliminar);
@@ -165,9 +179,11 @@ else
         confirmacionVisible = false;
         clienteIdAEliminar = 0;
     }
+    
 
     private async Task CargarClientes()
     {
+        // COndicion que carga y llama los clientes registados en la base de datos y los llama por su nombre como una lista.
         var resultado = await ClienteManager.GetAsync();
 
         if (resultado.Succeeded)
@@ -189,6 +205,7 @@ else
         }
     }
 
+// Modelo que calcula la cantidad de clientes registrados para el informe o reportes.
     private void CalcularCantidadClientes()
     {
         cantidadClientes = clientes?.Count ?? 0;
@@ -196,18 +213,23 @@ else
         cantidadClientesFemeninos = clientes?.Count(c => c.Sexo == "Femenino") ?? 0;
     }
 
-    private void MostrarMensajeError(string mensaje)
+
+    @* private void MostrarMensajeError(string mensaje)
     {
         // Aquí puedes implementar la lógica para mostrar el mensaje de error al usuario
         // Por ejemplo, mostrar un cuadro de diálogo, mostrar una notificación, etc.
         Console.WriteLine(mensaje);
-    }
+    } *@
 
+
+// Modelo que imprime el contendio en pantalla de la pagina web, es un modelo de JavaScript 
     private async Task Print()
     {
         await JSRuntime.InvokeVoidAsync("print");
     }
 
+
+// Modelo para Mostrar los informes
     private void MostrarInforme()
     {
         informeVisible = true;
