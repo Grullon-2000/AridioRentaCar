@@ -34,6 +34,5 @@ public class ReservaCreateRequest
 
     [Required(ErrorMessage = "Ingrese un Fecha valido")]
     public DateTime Fecha {get; set;}
-    public bool Finalizada { get; set; }
 
 }

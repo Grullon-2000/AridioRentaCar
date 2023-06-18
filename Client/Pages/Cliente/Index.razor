@@ -13,10 +13,7 @@
 <br>
 
 <button class="btn btn-outline-primary btn-agregar" @onclick="Agregar">Agregar</button>
-<br>
-<br>
 
-<button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button>
 
 <button class="btn btn-primary btn-imprimir" @onclick="MostrarInforme">Mostrar Informe</button>
 
@@ -26,7 +23,7 @@
 @if (clientes != null)
 {
     <br>
-    <table class="table table-hover table-dark">
+    <table class="table table-hover table-dark btn-imprimir">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -104,6 +101,7 @@ else
             <p>Total de clientes masculinos: @cantidadClientesMasculinos</p>
             <p>Total de clientes femeninos: @cantidadClientesFemeninos</p>
         </ModalBody>
+        <button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button>
     </ModalContent>
 </Modal>
 

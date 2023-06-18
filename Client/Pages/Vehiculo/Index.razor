@@ -3,8 +3,9 @@
 @inject IVehiculoManager VehiculoManager
 @inject NavigationManager urlHelper
 @inject IJSRuntime JSRuntime
+@using Blazorise
 
-<table  class="table btn-eliminacion">
+<table  class="table btn-eliminacion btn-agregar">
     <thead>
         <tr class= "bg-warning">
             <th>Vehiculos disponibles:</th>
@@ -15,11 +16,11 @@
     <tbody>
 
             <tr>
-                <td class= "bg-success btn-eliminacion">
+                <td class= "bg-success btn-eliminacion btn-agregar">
                     <span>@cantidadAutosActivos</span>
                 </td>
                 
-                <td class= "bg-danger btn-eliminacion">
+                <td class= "bg-danger btn-eliminacion btn-agregar">
                     <span>@cantidadAutosInactivos</span>
                 </td>
 
@@ -34,19 +35,24 @@
 
 <br>
 <h1 class="btn-registro" style="color: darkblue;">Vehiculos</h1>
+
 <br>
 <button class="btn btn-outline-primary btn-agregar" @onclick="Agregar">Agregar</button>
 
-<br>
-<br>
 
-<button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button>
-<br>
+
+<button class="btn btn-primary btn-imprimir" @onclick="MostrarInforme">Mostrar Informe</button>
+
+
+
+
+
+
 
 @if(Vehiculos != null )
 {
     <br>
-<table class="table table-hover table-dark">
+<table class="table table-hover table-dark btn-imprimir">
     <thead>
         <tr>
             <th scope="col">#</th>
@@ -125,6 +131,23 @@ else
 @* <p>Disponible: @cantidadAutosActivos</p>
 <p>No Disponible: @cantidadAutosInactivos</p> *@
 
+<Modal @ref="informeModalRef" IsOpen="@informeVisible">
+    <ModalContent Class="modal-content my-custom-modal">
+        <ModalHeader Class="my-custom-modal-header">
+            <h5 style="color: blue;" class="modal-title">Informe de Vehículos</h5>
+        </ModalHeader>
+        <ModalBody Class="my-custom-modal-body">
+            <h3>Cantidad de Vehículos Registrados</h3>
+            <p>Vehiculos totales: @cantidadVehiculosRegistrados</p>
+            <p>Activos: @cantidadAutosActivos</p>
+            <p>Inactivos: @cantidadAutosInactivos</p>
+        </ModalBody>
+        <ModalFooter>
+            <button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
 @code
 {
 
@@ -135,6 +158,9 @@ else
     
     private int cantidadAutosActivos;
     private int cantidadAutosInactivos;
+    private int cantidadVehiculosRegistrados;
+    private bool informeVisible = false;
+    private Modal informeModalRef;
 
 
     public List<VehiculoRecord>? Vehiculos { get; set; }
@@ -143,6 +169,7 @@ else
 
 
             await CargarVehiculos();
+            CalcularCantidadVehiculos();
 
         }
 
@@ -208,6 +235,19 @@ private async Task CargarVehiculos()
         await JSRuntime.InvokeVoidAsync("print");
     }
 
+
+    private void CalcularCantidadVehiculos()
+    {
+        cantidadVehiculosRegistrados = Vehiculos.Count;
+        cantidadAutosActivos = Vehiculos.Count(v => v.Activo);
+        cantidadAutosInactivos = Vehiculos.Count(v => !v.Activo);
+    }
+
+       private void MostrarInforme()
+    {
+        informeVisible = true;
+        informeModalRef.Show();
+    }
 
 
 } 

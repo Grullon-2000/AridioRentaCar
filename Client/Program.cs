@@ -23,6 +23,8 @@ builder.Services.AddScoped<IReservaManager, ReservaManager>();
 builder.Services.AddScoped<IUsuarioManager, UsuarioManager>();
 builder.Services.AddScoped<IUsuarioRolManager, UsuarioRolManager>();
 builder.Services.AddScoped<IVehiculoManager, VehiculoManager>();
+builder.Services.AddScoped<ReservaManager>();
+
 
 builder.Services.AddScoped<HttpClient>(s =>
 {

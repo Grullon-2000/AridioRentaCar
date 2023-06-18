@@ -26,19 +26,30 @@ public class ReservaManager : IReservaManager
         this.httpClient = httpClient;
     }
 
-    public async Task<ResultList<ReservaRecord>> GetAsync()
+public async Task<ResultList<ReservaRecord>> GetAsync()
+{
+    try
     {
-        try
+        var response = await httpClient.GetAsync(ReservaRouteManager.BASE);
+        var resultado = await response.ToResultList<ReservaRecord>();
+
+        // Agrega un punto de interrupción o imprime registros para verificar los datos recibidos
+        // Puedes acceder a la lista de reservas a través de "resultado.Data"
+        // Ejemplo:
+        Console.WriteLine("Reservas cargadas correctamente:");
+        foreach (var reserva in resultado.Items)
         {
-            var response = await httpClient.GetAsync(ReservaRouteManager.BASE);
-            var resultado = await response.ToResultList<ReservaRecord>();
-            return resultado;
+            Console.WriteLine($"ID: {reserva.Id}, FechaInicio: {reserva.FechaInicio}, Finalizada: {reserva.Finalizada}");
         }
-        catch (Exception e)
-        {
-            return ResultList<ReservaRecord>.Fail(e.Message);
-        }
+
+        return resultado;
     }
+    catch (Exception e)
+    {
+        return ResultList<ReservaRecord>.Fail(e.Message);
+    }
+}
+
 
 public async Task<Result<int>> CreateAsync(ReservaCreateRequest request)
 {

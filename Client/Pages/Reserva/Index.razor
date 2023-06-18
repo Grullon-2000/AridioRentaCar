@@ -12,8 +12,6 @@
 <br>
 <button class="btn btn-outline-primary btn-agregar" @onclick="Agregar">Agregar</button>
 
-<br>
-<br>
 <button class="btn btn-primary btn-imprimir" @onclick="MostrarInforme">Mostrar Informe</button>
 
 @* <button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button> *@
@@ -37,6 +35,7 @@
                 <th scope="col">Forma de pago</th>
                 <th class="btn-edicion"></th>
                 <th class="btn-eliminacion"></th>
+                <th class="btn-factura"></th>
                 <th class="btn-factura"></th>
             </tr>
         </thead>
@@ -62,15 +61,64 @@
                     <th class="btn-factura" scope="row">
                         <button class="btn btn-outline-primary" @onclick="()=>MostrarFactura(res)">Factura</button>
                     </th>
+                    <th class="btn-finalizar" scope="row">
+                        <button class="btn btn-outline-success" @onclick="()=>FinalizarReserva(res.Id)">Finalizar</button>
+                    </th>
+
                 </tr>
             }
         </tbody>
     </table>
-
 }
 else
 {
     <p>No hay reservas registradas...</p>
+}
+
+
+@if(reservas != null)
+{
+    <h3>Reservas finalizadas</h3>
+    <table class="table table-hover table-dark btn-imprimir">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Fecha Inicio</th>
+                <th scope="col">Fecha Final</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Vehiculo</th>
+                <th scope="col">Dias</th>
+                <th scope="col">Precio Renta</th>
+                <th scope="col">Precio total</th>
+                <th scope="col">Forma de pago</th>
+                <th class="btn-edicion"></th>
+                <th class="btn-eliminacion"></th>
+                <th class="btn-factura"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var res in reservas.Where(r => r.Finalizada))
+            {
+                <tr>
+                    <th scope="row">@res.Id</th>
+                    <th scope="row">@res.FechaInicio</th>
+                    <th scope="row">@res.FechaFin</th>
+                    <th scope="row">@res.Cliente.Nombre</th>
+                    <th scope="row">@res.Vehiculo.Marca</th>
+                    <th scope="row">@res.Dias</th>
+                    <th scope="row">@res.precioRenta</th>
+                    <th scope="row">@res.PrecioTotal</th>
+                    <th scope="row">@res.NombrePago</th>
+                    <th class="btn-edicion" scope="row"></th>
+                    <th class="btn-edicion" scope="row"></th>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay reservas finalizada...</p>
 }
 
 @if (confirmacionVisible)
@@ -169,7 +217,19 @@ else
                         }
                     </tbody>
                 </table>
-                <p><strong>Cantidad de dinero obtenido: </strong> @cantidadDineroObtenido</p>
+                <div>
+                    <h4>Cantidad de dinero obtenido:</h4>
+                    <p>Dinero obtenido: @cantidadDineroObtenido</p>
+                </div>
+
+                <div class="cuadro-diarico">
+                    <h4>Caja de cuadre diario</h4>
+                    <p>Dinero obtenido: @cantidadDineroObtenido</p>
+                </div>
+                <div>
+                <h4>Total de ingresos:</h4>
+                    <p>Ingresos totales: @totalIngresos</p>
+                </div>
                 <div><button class="btn-imprimir btn btn-primary" @onclick="Print">Imprimir</button></div>
             }
         </ModalBody>
@@ -195,6 +255,7 @@ else
 
     private Dictionary<string, int> reservasPorMes;
     private decimal cantidadDineroObtenido;
+    decimal totalIngresos = 0;
 
     protected override async Task OnInitializedAsync()
     {
@@ -263,11 +324,10 @@ else
 
         // Calcular la cantidad de dinero obtenido
         cantidadDineroObtenido = reservas.Sum(r => r.PrecioTotal);
+        // Calcular el total de ingresos
+        totalIngresos = reservas.Sum(r => r.PrecioTotal);
         }
-        else
-        {
-            // Manejar el error
-        }
+
     }
 
     private async Task Print()
@@ -306,6 +366,51 @@ else
         informeVisible = true;
         informeModalRef.Show();
     }
+
+
+
+// Codigo Funcional.
+
+@* private async Task FinalizarReserva(int reservaId)
+{
+    var reserva = reservas.FirstOrDefault(r => r.Id == reservaId);
+    if (reserva != null)
+    {
+        reserva.Finalizada = true;
+        var updateResult = await ReservaManager.UpdateAsync(reservaId, new ReservaUpdateRequest { Finalizada = true });
+        if (updateResult.Succeeded)
+        {
+            // La reserva se actualizó correctamente en el backend
+            // Puedes realizar cualquier otra acción necesaria, como mostrar un mensaje de éxito
+        }
+        else
+        {
+            // Ocurrió un error al actualizar la reserva en el backend
+            // Puedes mostrar un mensaje de error o realizar cualquier otra acción necesaria
+        }
+    }
+} *@
+
+
+private async Task FinalizarReserva(int reservaId)
+{
+    var reserva = reservas.FirstOrDefault(r => r.Id == reservaId);
+    if (reserva != null)
+    {
+        reserva.Finalizada = true;
+        var updateResult = await ReservaManager.UpdateAsync(reservaId, new ReservaUpdateRequest { Finalizada = true });
+        if (updateResult.Succeeded)
+        {
+            // La reserva se actualizó correctamente en la base de datos
+            // Puedes realizar cualquier otra acción necesaria, como mostrar un mensaje de éxito
+        }
+        else
+        {
+            // Ocurrió un error al actualizar la reserva en la base de datos
+            // Puedes mostrar un mensaje de error o realizar cualquier otra acción necesaria
+        }
+    }
+}
 
 
 

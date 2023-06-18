@@ -49,7 +49,7 @@ namespace Aridio_Rent_A_Car.Server.Endpoints.Reservas
                 
 
                 await dbContext.SaveChangesAsync(cancellationToken);
-                return Ok(reserva.Id);
+                return Ok(reserva);
             }
             catch (Exception ex)
             {

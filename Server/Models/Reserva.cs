@@ -36,7 +36,6 @@ public class Reserva
             Pago = request.Pago,
             NombrePago = request.NombrePago,
             Fecha = request.Fecha,
-            Finalizada = request.Finalizada,
         };
     }
 
