@@ -3,80 +3,99 @@
 
 
 
-    <div class="contact-info">
-        <h1 style="color: rgb(243, 24, 24);">Información de contacto</h1>
-        <p>Teléfono: +1 829 915 4958</p>
-        <p>Email: techmaster2023@gmail.com</p>
-        <p>Dirección: 13 Calle Duarte Principal, Municipio; Jima Abajo, Ciudad; La Vega.</p>
+<div class="contact-container">
+        <div class="contact-form">
+            <h1>Contacto</h1>
+            <form>
+                <div class="form-group">
+                    <label for="name">Nombre:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Mensaje:</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+        <div class="contact-info">
+            <h1 style="color: rgb(243, 24, 24);">Información de contacto</h1>
+            <p>Teléfono: +1 829 915 4958</p>
+            <p>Email: techmaster2023@gmail.com</p>
+            <p>Dirección: 13 Calle Duarte Principal, Municipio; Jima Abajo, Ciudad; La Vega.</p>
+        </div>
     </div>
 
 
-<style>
-    .contact-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        flex-wrap: wrap;
-    }
+    <style>
+        .contact-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
 
-    .contact-form {
-        flex: 1 1 400px;
-        max-width: 400px;
-        margin-right: 20px;
-        background-color: #f9f9f9;
-        padding: 20px;
-        border-radius: 4px;
-    }
+        .contact-form {
+            flex: 1 1 400px;
+            max-width: 400px;
+            margin-right: 20px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 4px;
+        }
 
-    .form-group {
-        margin-bottom: 20px;
-    }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-    label {
-        display: block;
-        font-weight: bold;
-        color: #333;
-    }
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+        }
 
-    input,
-    textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
 
-    button[type="submit"] {
-        background-color: #007bff;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-    button[type="submit"]:hover {
-        background-color: #4097f5;
-    }
+        button[type="submit"]:hover {
+            background-color: #4097f5;
+        }
 
-    .contact-info {
-        flex: 1 1 400px;
-        background-color: #00ccff;
-        color: white;
-        padding: 20px;
-        border-radius: 4px;
-    }
+        .contact-info {
+            flex: 1 1 400px;
+            background-color: #00ccff;
+            color: white;
+            padding: 20px;
+            border-radius: 4px;
+        }
 
-    .contact-info h2 {
-        margin-top: 0;
-    }
+        .contact-info h1 {
+            margin-top: 0;
+        }
 
-    .contact-info p {
-        margin-bottom: 10px;
-    }
+        .contact-info p {
+            margin-bottom: 10px;
+        }
 
-   
         .contact-form {
             margin-right: 0;
             margin-bottom: 20px;
@@ -85,5 +104,5 @@
         .contact-info {
             margin-bottom: 20px;
         }
-    
-</style>
+    </style>
+
