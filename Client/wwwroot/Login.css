@@ -1,6 +1,6 @@
 body{
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #000000 70%);
-    margin: 350px;
+    background-image: linear-gradient(180deg, rgb(0, 89, 255) 0%, #000000 70%);
+    margin: 500px;
 }
 
 h3{
@@ -17,35 +17,38 @@ label{
 }
 
 div{
-    border-radius: 40px;
+    border-radius: 80px;
+    position: relative;
 }
 
 .btn-primary{
     color: rgb(255, 255, 255);
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #000000 70%);
     position: relative;
-    left: 1px;
+    left: 20px;
     top: 15px;
     border-radius: 40px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-style: italic;
+    
 }
 
 .btn-second{
     color: rgb(255, 255, 255);
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #000000 70%);
     position: relative;
-    left: 135px;
-    top: -30px;
+    left: 160px;
+    top: -29px;
     border-radius: 40px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-style: italic;
 }
 
 .mb-3.text-center{
-    content: url(favicon.png);
+    content: url(Logo.PNG);
     position: relative;
-    left: 155px;
+    left: -10px;
+    margin: -25px;
 }
 
 
